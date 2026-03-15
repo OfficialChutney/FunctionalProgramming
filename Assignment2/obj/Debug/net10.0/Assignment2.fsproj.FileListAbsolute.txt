@@ -1,0 +1,4 @@
+C:\Users\noah8\OneDrive\ITU\Functional Programming\Assignment2\obj\Debug\net10.0\Assignment2.fsproj.AssemblyReference.cache
+C:\Users\noah8\OneDrive\ITU\Functional Programming\Assignment2\obj\Debug\net10.0\Assignment2.AssemblyInfoInputs.cache
+C:\Users\noah8\OneDrive\ITU\Functional Programming\Assignment2\obj\Debug\net10.0\Assignment2.AssemblyInfo.fs
+C:\Users\noah8\OneDrive\ITU\Functional Programming\Assignment2\obj\Debug\net10.0\Assignment2.fsproj.CoreCompileInputs.cache
