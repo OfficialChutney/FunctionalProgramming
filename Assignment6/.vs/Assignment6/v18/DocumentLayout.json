@@ -1,0 +1,149 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment6\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{8F77218E-02C2-0E8F-2E44-BE4AED5002F2}|Assignment6\\Assignment6.fsproj|c:\\users\\noah8\\source\\repos\\functional programming\\assignment6\\assignment6\\state.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}",
+      "RelativeMoniker": "D:0:0:{8F77218E-02C2-0E8F-2E44-BE4AED5002F2}|Assignment6\\Assignment6.fsproj|solutionrelative:assignment6\\state.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8F77218E-02C2-0E8F-2E44-BE4AED5002F2}|Assignment6\\Assignment6.fsproj|c:\\users\\noah8\\source\\repos\\functional programming\\assignment6\\assignment6\\eval.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}",
+      "RelativeMoniker": "D:0:0:{8F77218E-02C2-0E8F-2E44-BE4AED5002F2}|Assignment6\\Assignment6.fsproj|solutionrelative:assignment6\\eval.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8F77218E-02C2-0E8F-2E44-BE4AED5002F2}|Assignment6\\Assignment6.fsproj|c:\\users\\noah8\\source\\repos\\functional programming\\assignment6\\assignment6\\memory.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}",
+      "RelativeMoniker": "D:0:0:{8F77218E-02C2-0E8F-2E44-BE4AED5002F2}|Assignment6\\Assignment6.fsproj|solutionrelative:assignment6\\memory.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8F77218E-02C2-0E8F-2E44-BE4AED5002F2}|Assignment6\\Assignment6.fsproj|c:\\users\\noah8\\source\\repos\\functional programming\\assignment6\\assignment6\\memory.fsi||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}",
+      "RelativeMoniker": "D:0:0:{8F77218E-02C2-0E8F-2E44-BE4AED5002F2}|Assignment6\\Assignment6.fsproj|solutionrelative:assignment6\\memory.fsi||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8F77218E-02C2-0E8F-2E44-BE4AED5002F2}|Assignment6\\Assignment6.fsproj|c:\\users\\noah8\\source\\repos\\functional programming\\assignment6\\assignment6\\state.fsi||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}",
+      "RelativeMoniker": "D:0:0:{8F77218E-02C2-0E8F-2E44-BE4AED5002F2}|Assignment6\\Assignment6.fsproj|solutionrelative:assignment6\\state.fsi||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8F77218E-02C2-0E8F-2E44-BE4AED5002F2}|Assignment6\\Assignment6.fsproj|c:\\users\\noah8\\source\\repos\\functional programming\\assignment6\\assignment6\\programs.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}",
+      "RelativeMoniker": "D:0:0:{8F77218E-02C2-0E8F-2E44-BE4AED5002F2}|Assignment6\\Assignment6.fsproj|solutionrelative:assignment6\\programs.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8F77218E-02C2-0E8F-2E44-BE4AED5002F2}|Assignment6\\Assignment6.fsproj|c:\\users\\noah8\\source\\repos\\functional programming\\assignment6\\assignment6\\language.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}",
+      "RelativeMoniker": "D:0:0:{8F77218E-02C2-0E8F-2E44-BE4AED5002F2}|Assignment6\\Assignment6.fsproj|solutionrelative:assignment6\\language.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8F77218E-02C2-0E8F-2E44-BE4AED5002F2}|Assignment6\\Assignment6.fsproj|c:\\users\\noah8\\source\\repos\\functional programming\\assignment6\\assignment6\\assignment6.fsproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{8F77218E-02C2-0E8F-2E44-BE4AED5002F2}|Assignment6\\Assignment6.fsproj|solutionrelative:assignment6\\assignment6.fsproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Memory.fsi",
+              "DocumentMoniker": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment6\\Assignment6\\Memory.fsi",
+              "RelativeDocumentMoniker": "Assignment6\\Memory.fsi",
+              "ToolTip": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment6\\Assignment6\\Memory.fsi",
+              "RelativeToolTip": "Assignment6\\Memory.fsi",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-03-17T13:34:46.304Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "State.fsi",
+              "DocumentMoniker": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment6\\Assignment6\\State.fsi",
+              "RelativeDocumentMoniker": "Assignment6\\State.fsi",
+              "ToolTip": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment6\\Assignment6\\State.fsi",
+              "RelativeToolTip": "Assignment6\\State.fsi",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-03-17T11:37:49.785Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Assignment6.fsproj",
+              "DocumentMoniker": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment6\\Assignment6\\Assignment6.fsproj",
+              "RelativeDocumentMoniker": "Assignment6\\Assignment6.fsproj",
+              "ToolTip": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment6\\Assignment6\\Assignment6.fsproj",
+              "RelativeToolTip": "Assignment6\\Assignment6.fsproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001351|",
+              "WhenOpened": "2026-03-17T11:37:23.546Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Eval.fs",
+              "DocumentMoniker": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment6\\Assignment6\\Eval.fs",
+              "RelativeDocumentMoniker": "Assignment6\\Eval.fs",
+              "ToolTip": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment6\\Assignment6\\Eval.fs",
+              "RelativeToolTip": "Assignment6\\Eval.fs",
+              "ViewState": "AgIAAD0AAAAAAAAAAAAAAIUAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-03-15T13:09:52.011Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "State.fs",
+              "DocumentMoniker": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment6\\Assignment6\\State.fs",
+              "RelativeDocumentMoniker": "Assignment6\\State.fs",
+              "ToolTip": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment6\\Assignment6\\State.fs",
+              "RelativeToolTip": "Assignment6\\State.fs",
+              "ViewState": "AgIAACgAAAAAAAAAAAAAADUAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-03-15T13:09:22.266Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Memory.fs",
+              "DocumentMoniker": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment6\\Assignment6\\Memory.fs",
+              "RelativeDocumentMoniker": "Assignment6\\Memory.fs",
+              "ToolTip": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment6\\Assignment6\\Memory.fs",
+              "RelativeToolTip": "Assignment6\\Memory.fs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAwwBkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-03-15T13:09:19.354Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Programs.fs",
+              "DocumentMoniker": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment6\\Assignment6\\Programs.fs",
+              "RelativeDocumentMoniker": "Assignment6\\Programs.fs",
+              "ToolTip": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment6\\Assignment6\\Programs.fs",
+              "RelativeToolTip": "Assignment6\\Programs.fs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-03-15T13:09:14.042Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Language.fs",
+              "DocumentMoniker": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment6\\Assignment6\\Language.fs",
+              "RelativeDocumentMoniker": "Assignment6\\Language.fs",
+              "ToolTip": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment6\\Assignment6\\Language.fs",
+              "RelativeToolTip": "Assignment6\\Language.fs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-03-15T13:09:11.292Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
