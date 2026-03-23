@@ -10,7 +10,7 @@ This was made without AI because it was for learning, and we where explicitly to
 
 
 
-\## I don't understand half of the assignments articulation
+## I don't understand half of the assignments articulation
 
 No one does. To pass this course, you have to be an expert in F# and a professional cryptographer, in order to crack the codes which is the assignments, to understand what the fuck it is asking you to code. God forbid you use AI to explain to you what the assignment want's you to do, cause then you get sent directly to jail.
 
