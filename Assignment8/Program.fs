@@ -1,0 +1,18 @@
+(*
+open Interpreter.Programs
+open Interpreter.Eval
+open Interpreter.State
+
+let runProgram prog =
+    42 |>
+    Some |>
+    mkState 10 |>
+    stmntEval prog |>
+    ignore
+
+// Uncomment the program you want to run
+
+runProgram guessANumber
+//runProgram bubbleSort
+*)
+printfn "Hello from F#"
