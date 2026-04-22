@@ -69,10 +69,10 @@ module Interpreter.StateMonad
             | Error err -> Error err
         )
 
-    let random (s : unit) = 
-        SM (fun (st : state) -> 
-        match State.random st with
-        | v -> Ok (v, st)        
+    let random =
+        SM (fun (st : state) ->
+            match State.random st with
+            | v -> Ok (v, st)
         )
     
     let evalState (st : state) (SM f) =

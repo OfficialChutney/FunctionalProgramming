@@ -64,7 +64,7 @@ module Interpreter.Eval
 
             if y <> 0 then return (x / y) else return! fail DivisionByZero
             
-        | Random -> return! random ()
+        | Random -> return! random
         | Read -> return (readInt ())
         | Cond (b, a1, a2) ->
             let! x = bexprEval2 b
@@ -114,7 +114,7 @@ module Interpreter.Eval
             aexprEval a >>= fun x ->
             aexprEval b >>= fun y ->
             if y <> 0 then ret (x / y) else fail DivisionByZero
-        | Random -> random ()
+        | Random -> random
         | Read -> ret (readInt ())
         | Cond (b, a1, a2) ->
             bexprEval b >>= fun x ->

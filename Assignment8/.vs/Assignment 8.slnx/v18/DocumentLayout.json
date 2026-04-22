@@ -3,16 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment8\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{2F7FAA61-42AC-EA3F-C629-BA5D5E1B15CF}|Assignment8.fsproj|c:\\users\\noah8\\source\\repos\\functional programming\\assignment8\\eval.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}",
-      "RelativeMoniker": "D:0:0:{2F7FAA61-42AC-EA3F-C629-BA5D5E1B15CF}|Assignment8.fsproj|solutionrelative:eval.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{2F7FAA61-42AC-EA3F-C629-BA5D5E1B15CF}|Assignment8.fsproj|c:\\users\\noah8\\source\\repos\\functional programming\\assignment8\\statemonad.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}",
       "RelativeMoniker": "D:0:0:{2F7FAA61-42AC-EA3F-C629-BA5D5E1B15CF}|Assignment8.fsproj|solutionrelative:statemonad.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{2F7FAA61-42AC-EA3F-C629-BA5D5E1B15CF}|Assignment8.fsproj|c:\\users\\noah8\\source\\repos\\functional programming\\assignment8\\statemonad.fsi||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}",
       "RelativeMoniker": "D:0:0:{2F7FAA61-42AC-EA3F-C629-BA5D5E1B15CF}|Assignment8.fsproj|solutionrelative:statemonad.fsi||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2F7FAA61-42AC-EA3F-C629-BA5D5E1B15CF}|Assignment8.fsproj|c:\\users\\noah8\\source\\repos\\functional programming\\assignment8\\eval.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}",
+      "RelativeMoniker": "D:0:0:{2F7FAA61-42AC-EA3F-C629-BA5D5E1B15CF}|Assignment8.fsproj|solutionrelative:eval.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,11 +22,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "Eval.fs",
               "DocumentMoniker": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment8\\Eval.fs",
               "RelativeDocumentMoniker": "Eval.fs",
@@ -39,26 +39,26 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "StateMonad.fsi",
               "DocumentMoniker": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment8\\StateMonad.fsi",
               "RelativeDocumentMoniker": "StateMonad.fsi",
               "ToolTip": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment8\\StateMonad.fsi",
               "RelativeToolTip": "StateMonad.fsi",
-              "ViewState": "AgIAACEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAABoAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2026-04-13T16:35:57.875Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "StateMonad.fs",
               "DocumentMoniker": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment8\\StateMonad.fs",
               "RelativeDocumentMoniker": "StateMonad.fs",
               "ToolTip": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment8\\StateMonad.fs",
               "RelativeToolTip": "StateMonad.fs",
-              "ViewState": "AgIAAE8AAAAAAAAAAAAcwLIAAAAqAAAAAAAAAA==",
+              "ViewState": "AgIAACoAAAAAAAAAAAAAAEkAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2026-04-13T16:35:51.906Z",
               "EditorCaption": ""

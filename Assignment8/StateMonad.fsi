@@ -24,7 +24,7 @@ module Interpreter.StateMonad
     val (>>>=) : 'a stateMonad -> 'b stateMonad -> 'b stateMonad
     
     // Fix these signatures
-    val random : unit -> int stateMonad
+    val random : int stateMonad
 
     val declare : string -> unit stateMonad
     val getVar : string -> int stateMonad
