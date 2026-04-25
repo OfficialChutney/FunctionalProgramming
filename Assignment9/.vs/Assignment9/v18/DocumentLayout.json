@@ -1,0 +1,173 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment9\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{5B29568A-644B-4A90-D3E9-B4A6F93464F8}|Assignment9.fsproj|c:\\users\\noah8\\source\\repos\\functional programming\\assignment9\\parser.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}",
+      "RelativeMoniker": "D:0:0:{5B29568A-644B-4A90-D3E9-B4A6F93464F8}|Assignment9.fsproj|solutionrelative:parser.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5B29568A-644B-4A90-D3E9-B4A6F93464F8}|Assignment9.fsproj|c:\\users\\noah8\\source\\repos\\functional programming\\assignment9\\language.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}",
+      "RelativeMoniker": "D:0:0:{5B29568A-644B-4A90-D3E9-B4A6F93464F8}|Assignment9.fsproj|solutionrelative:language.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5B29568A-644B-4A90-D3E9-B4A6F93464F8}|Assignment9.fsproj|c:\\users\\noah8\\source\\repos\\functional programming\\assignment9\\program.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}",
+      "RelativeMoniker": "D:0:0:{5B29568A-644B-4A90-D3E9-B4A6F93464F8}|Assignment9.fsproj|solutionrelative:program.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5B29568A-644B-4A90-D3E9-B4A6F93464F8}|Assignment9.fsproj|c:\\users\\noah8\\source\\repos\\functional programming\\assignment9\\eval.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}",
+      "RelativeMoniker": "D:0:0:{5B29568A-644B-4A90-D3E9-B4A6F93464F8}|Assignment9.fsproj|solutionrelative:eval.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5B29568A-644B-4A90-D3E9-B4A6F93464F8}|Assignment9.fsproj|c:\\users\\noah8\\source\\repos\\functional programming\\assignment9\\jparsec.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}",
+      "RelativeMoniker": "D:0:0:{5B29568A-644B-4A90-D3E9-B4A6F93464F8}|Assignment9.fsproj|solutionrelative:jparsec.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5B29568A-644B-4A90-D3E9-B4A6F93464F8}|Assignment9.fsproj|c:\\users\\noah8\\source\\repos\\functional programming\\assignment9\\state.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}",
+      "RelativeMoniker": "D:0:0:{5B29568A-644B-4A90-D3E9-B4A6F93464F8}|Assignment9.fsproj|solutionrelative:state.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5B29568A-644B-4A90-D3E9-B4A6F93464F8}|Assignment9.fsproj|c:\\users\\noah8\\source\\repos\\functional programming\\assignment9\\state.fsi||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}",
+      "RelativeMoniker": "D:0:0:{5B29568A-644B-4A90-D3E9-B4A6F93464F8}|Assignment9.fsproj|solutionrelative:state.fsi||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5B29568A-644B-4A90-D3E9-B4A6F93464F8}|Assignment9.fsproj|c:\\users\\noah8\\source\\repos\\functional programming\\assignment9\\memory.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}",
+      "RelativeMoniker": "D:0:0:{5B29568A-644B-4A90-D3E9-B4A6F93464F8}|Assignment9.fsproj|solutionrelative:memory.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5B29568A-644B-4A90-D3E9-B4A6F93464F8}|Assignment9.fsproj|c:\\users\\noah8\\source\\repos\\functional programming\\assignment9\\jparsec.fsi||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}",
+      "RelativeMoniker": "D:0:0:{5B29568A-644B-4A90-D3E9-B4A6F93464F8}|Assignment9.fsproj|solutionrelative:jparsec.fsi||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 8,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "State.fs",
+              "DocumentMoniker": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment9\\State.fs",
+              "RelativeDocumentMoniker": "State.fs",
+              "ToolTip": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment9\\State.fs",
+              "RelativeToolTip": "State.fs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-04-23T18:00:00.712Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Language.fs",
+              "DocumentMoniker": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment9\\Language.fs",
+              "RelativeDocumentMoniker": "Language.fs",
+              "ToolTip": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment9\\Language.fs",
+              "RelativeToolTip": "Language.fs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-04-23T17:18:45.815Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Eval.fs",
+              "DocumentMoniker": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment9\\Eval.fs",
+              "RelativeDocumentMoniker": "Eval.fs",
+              "ToolTip": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment9\\Eval.fs",
+              "RelativeToolTip": "Eval.fs",
+              "ViewState": "AgIAABEAAAAAAAAAAAAjwCQAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-04-23T17:18:41.391Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Memory.fs",
+              "DocumentMoniker": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment9\\Memory.fs",
+              "RelativeDocumentMoniker": "Memory.fs",
+              "ToolTip": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment9\\Memory.fs",
+              "RelativeToolTip": "Memory.fs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-04-23T17:18:39.361Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "State.fsi",
+              "DocumentMoniker": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment9\\State.fsi",
+              "RelativeDocumentMoniker": "State.fsi",
+              "ToolTip": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment9\\State.fsi",
+              "RelativeToolTip": "State.fsi",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-04-23T17:18:37.562Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "JParsec.fsi",
+              "DocumentMoniker": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment9\\JParsec.fsi",
+              "RelativeDocumentMoniker": "JParsec.fsi",
+              "ToolTip": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment9\\JParsec.fsi",
+              "RelativeToolTip": "JParsec.fsi",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-04-23T16:57:14.608Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "JParsec.fs",
+              "DocumentMoniker": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment9\\JParsec.fs",
+              "RelativeDocumentMoniker": "JParsec.fs",
+              "ToolTip": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment9\\JParsec.fs",
+              "RelativeToolTip": "JParsec.fs",
+              "ViewState": "AgIAAMgAAAAAAAAAAAAjwO0AAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-04-23T15:34:26.741Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.fs",
+              "DocumentMoniker": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment9\\Program.fs",
+              "RelativeDocumentMoniker": "Program.fs",
+              "ToolTip": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment9\\Program.fs",
+              "RelativeToolTip": "Program.fs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-04-23T14:22:36.781Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Parser.fs",
+              "DocumentMoniker": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment9\\Parser.fs",
+              "RelativeDocumentMoniker": "Parser.fs",
+              "ToolTip": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment9\\Parser.fs",
+              "RelativeToolTip": "Parser.fs",
+              "ViewState": "AgIAAH0AAAAAAAAAAAAAAIQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-04-23T13:35:24.557Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

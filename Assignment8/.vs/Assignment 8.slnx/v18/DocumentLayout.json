@@ -13,6 +13,14 @@
     {
       "AbsoluteMoniker": "D:0:0:{2F7FAA61-42AC-EA3F-C629-BA5D5E1B15CF}|Assignment8.fsproj|c:\\users\\noah8\\source\\repos\\functional programming\\assignment8\\eval.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}",
       "RelativeMoniker": "D:0:0:{2F7FAA61-42AC-EA3F-C629-BA5D5E1B15CF}|Assignment8.fsproj|solutionrelative:eval.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2F7FAA61-42AC-EA3F-C629-BA5D5E1B15CF}|Assignment8.fsproj|c:\\users\\noah8\\source\\repos\\functional programming\\assignment8\\state.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}",
+      "RelativeMoniker": "D:0:0:{2F7FAA61-42AC-EA3F-C629-BA5D5E1B15CF}|Assignment8.fsproj|solutionrelative:state.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2F7FAA61-42AC-EA3F-C629-BA5D5E1B15CF}|Assignment8.fsproj|c:\\users\\noah8\\source\\repos\\functional programming\\assignment8\\memory.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}",
+      "RelativeMoniker": "D:0:0:{2F7FAA61-42AC-EA3F-C629-BA5D5E1B15CF}|Assignment8.fsproj|solutionrelative:memory.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,8 +30,32 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 4,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "State.fs",
+              "DocumentMoniker": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment8\\State.fs",
+              "RelativeDocumentMoniker": "State.fs",
+              "ToolTip": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment8\\State.fs",
+              "RelativeToolTip": "State.fs",
+              "ViewState": "AgIAACoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-04-22T16:58:18.068Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Memory.fs",
+              "DocumentMoniker": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment8\\Memory.fs",
+              "RelativeDocumentMoniker": "Memory.fs",
+              "ToolTip": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment8\\Memory.fs",
+              "RelativeToolTip": "Memory.fs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-04-22T16:58:01.505Z"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 2,
@@ -32,10 +64,9 @@
               "RelativeDocumentMoniker": "Eval.fs",
               "ToolTip": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment8\\Eval.fs",
               "RelativeToolTip": "Eval.fs",
-              "ViewState": "AgIAADAAAAAAAAAAAAAcwEcAAAArAAAAAAAAAA==",
+              "ViewState": "AgIAADMAAAAAAAAAAAAAAGIAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-04-13T16:45:07.42Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-13T16:45:07.42Z"
             },
             {
               "$type": "Document",
@@ -45,10 +76,9 @@
               "RelativeDocumentMoniker": "StateMonad.fsi",
               "ToolTip": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment8\\StateMonad.fsi",
               "RelativeToolTip": "StateMonad.fsi",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAABoAAAAbAAAAAAAAAA==",
+              "ViewState": "AgIAACEAAAAAAAAAAAAAwDYAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-04-13T16:35:57.875Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-13T16:35:57.875Z"
             },
             {
               "$type": "Document",
@@ -58,10 +88,9 @@
               "RelativeDocumentMoniker": "StateMonad.fs",
               "ToolTip": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment8\\StateMonad.fs",
               "RelativeToolTip": "StateMonad.fs",
-              "ViewState": "AgIAACoAAAAAAAAAAAAAAEkAAAARAAAAAAAAAA==",
+              "ViewState": "AgIAAI4AAAAAAAAAAAAAwLMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-04-13T16:35:51.906Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-13T16:35:51.906Z"
             }
           ]
         }
