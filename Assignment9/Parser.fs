@@ -9,8 +9,8 @@
 
     *)
 
-    open JParsec.TextParser             // Example parser combinator library.
-    // open FParsecLight.TextParser     // Industrial parser-combinator library. Use if performance gets bad
+    // open JParsec.TextParser          // Example parser combinator library.
+    open FParsecLight.TextParser        // Industrial parser-combinator library. Use if performance gets bad
     
 
     let pif       : Parser<string> = pstring "if"
@@ -41,9 +41,9 @@
     let (.>*>) p1 p2  = (.>>) ((.>>) p1 spaces) p2
     let (>*>.) p1 p2  = (>>.) ((.>>) p1 spaces) p2
 
-    let parenthesise (p1 : Parser<'a>) = (.>*>) ((>*>.) (satisfy (fun c -> c = '(')) p1) (satisfy (fun c -> c = ')'))
-    let curlyBrackethise (p1 : Parser<'a>) = (.>*>) ((>*>.) (satisfy (fun c -> c = '{')) p1) (satisfy (fun c -> c = '}'))
-    let squareBrackethise (p1 : Parser<'a>) = (.>*>) ((>*>.) (satisfy (fun c -> c = '[')) p1) (satisfy (fun c -> c = ']'))
+    let parenthesise (p1 : Parser<'a>) = (.>*>) ((>*>.) ((>>.) spaces (satisfy (fun c -> c = '('))) p1) (satisfy (fun c -> c = ')'))
+    let curlyBrackethise (p1 : Parser<'a>) = (.>*>) ((>*>.) ((>>.) spaces (satisfy (fun c -> c = '{'))) p1) (satisfy (fun c -> c = '}'))
+    let squareBrackethise (p1 : Parser<'a>) = (.>*>) ((>*>.) ((>>.) spaces (satisfy (fun c -> c = '['))) p1) (satisfy (fun c -> c = ']'))
         
     let charToString (a : (char * char list))  =
 
@@ -60,7 +60,7 @@
     
     let unop (op : Parser<'a>) (a : Parser<'b>) = (>*>.) op a 
 
-    let binop (op : Parser<'a>) (a : Parser<'b>) (b : Parser<'c>) : Parser<'b * 'c> = (.>*>.) ((>*>.) op a) b
+    let binop (op : Parser<'a>) (a : Parser<'b>) (b : Parser<'c>) : Parser<'b * 'c> = (.>*>.) ((.>*>) a op) b
 
     let LevelOneParseAexpr, oneAexprRef = createParserForwardedToRef<aexpr>()
     let LevelTwoParseAexpr, twoAexprRef = createParserForwardedToRef<aexpr>()
@@ -70,7 +70,10 @@
     let LevelTwoParseBExpr, twoBexprRef = createParserForwardedToRef<bexpr>()
 
     //Level 1
-    let CondParse = (.>>.) ((.>>) LevelOneParseBexpr (pchar '?')) ((.>>.) LevelOneParseAexpr ((>>.) (pchar ':') LevelOneParseAexpr)) |>> (fun (a, (b, c)) -> Cond(a, b, c)) <?> "Cond"
+    let CondParse =
+        (.>*>.) ((.>*>) LevelOneParseBexpr (pchar '?')) ((.>*>.) ((.>*>) LevelOneParseAexpr (pchar ':')) LevelOneParseAexpr)
+        |>> (fun (a, (b, c)) -> Cond(a, b, c))
+        <?> "Cond"
     do oneAexprRef := choice [CondParse; LevelTwoParseAexpr]
 
     //Level 2
@@ -87,7 +90,7 @@
 
     let DivParse = binop (pchar '/') LevelFourParseAexpr LevelThreeParseAexpr |>> Div <?> "Div"
 
-    let ModParse = binop (pchar '%') LevelFourParseAexpr LevelThreeParseAexpr |>> (fun (a,b) -> Add(a, Mul(Num -1, Mul(Div(a, b), b)))) <?> "Mod"
+    let ModParse = binop (pchar '%') LevelFourParseAexpr LevelThreeParseAexpr |>> (fun (a,b) -> Add(a, Mul(Mul(Div(a, b), b), Num -1))) <?> "Mod"
 
     do threeAexprRef := choice [MulParse; DivParse; ModParse; LevelFourParseAexpr]
 
@@ -97,7 +100,7 @@
     let negationAExprParse = unop (pchar '-') LevelFourParseAexpr |>> (fun a -> Mul(Num -1, a))
 
     let ParParse = parenthesise LevelOneParseAexpr <?> "ParAExpr"
-    let BraParse = squareBrackethise LevelOneParseAexpr <?> "Square"
+    let BraParse = squareBrackethise LevelOneParseAexpr |>> MemRead <?> "Square"
 
     let readParse = pread |>> (fun _ -> Read) <?> "Read"
 
@@ -125,11 +128,20 @@
     let notEqParse = binop (pstring "<>") LevelTwoParseAexpr LevelOneParseAexpr |>> (fun (a, b) -> Not (Eq (a,b))) <?> "Not Equal"
 
     let lessThanParse = binop (pchar '<') LevelTwoParseAexpr LevelOneParseAexpr |>> Lt <?> "Less Than"
-    let lessThanOrEqualParse = binop (pstring "<=") LevelTwoParseAexpr LevelOneParseAexpr |>> (fun (a,b) -> Not (Conj (Not (Lt(a, b)), Not (Eq(a, b))))) <?> "Less Than or equal to"
+    let lessThanOrEqualParse =
+        binop (pstring "<=") LevelTwoParseAexpr LevelOneParseAexpr
+        |>> (fun (a,b) -> Not (Conj (Not (Lt(a, b)), Not (Not (Not (Eq(a, b)))))))
+        <?> "Less Than or equal to"
     
-    let biggerThanParse = binop (pchar '>') LevelTwoParseAexpr LevelOneParseAexpr |>> (fun (a,b) -> Lt (b, a)) <?> "Bigger Than"
+    let biggerThanParse =
+        binop (pchar '>') LevelTwoParseAexpr LevelOneParseAexpr
+        |>> (fun (a,b) -> Conj (Not (Eq (a, b)), Not (Lt (a, b))))
+        <?> "Bigger Than"
 
-    let biggerThanOrEqualTo = binop (pstring ">=") LevelTwoParseAexpr LevelOneParseAexpr |>> (fun (a,b) -> Not (Conj (Not (Lt(b, a)), Not (Eq(a, b))))) <?> "Bigger Than or equal to"
+    let biggerThanOrEqualTo =
+        binop (pstring ">=") LevelTwoParseAexpr LevelOneParseAexpr
+        |>> (fun (a,b) -> Not (Lt(a, b)))
+        <?> "Bigger Than or equal to"
 
     let ParBParse = parenthesise LevelOneParseBexpr <?> "ParBExpr"
 
@@ -141,20 +153,65 @@
     
     do oneBexprRef := choice [AndExpr; ORExpr; LevelTwoParseBExpr]
 
-    do twoBexprRef := choice [trueParse; falseParse; negateBexprParse; eqParse; notEqParse; lessThanOrEqualParse; lessThanParse; biggerThanOrEqualTo; biggerThanParse; ParBParse]
+    do twoBexprRef := choice [trueParse; falseParse; negateBexprParse; ParBParse; eqParse; notEqParse; lessThanOrEqualParse; lessThanParse; biggerThanOrEqualTo; biggerThanParse]
 
+    let LevelOneParseStmnt, oneStmntRef = createParserForwardedToRef<stmnt>()
+    let LevelTwoParseStmnt, twoStmntRef = createParserForwardedToRef<stmnt>()
 
+    //Level 2 statements
 
+    let CurlyParse = curlyBrackethise LevelOneParseStmnt <?> "StmntCurlyParse" 
 
+    let parseVStmnt =
+        (.>>.) pid (spaces >>. pstring ":=" >>. spaces >>. LevelOneParseAexpr)
+        |>> (fun (a, b) -> Assign (a, b))
+        <?> "StmntVar"
+
+    let parseDeclare = (>>.) ((.>>.) pdeclare spaces1) pid |>> Declare <?> "Declare"
+
+    let parseCondition = (<|>) (parenthesise LevelOneParseBexpr) LevelOneParseBexpr
+
+    let parseIfElse = (.>*>.) ((.>*>) ( (.>*>.) ((>*>.) pif parseCondition) CurlyParse) pelse) CurlyParse |>> (fun ((a, b), c) -> If (a, b, c)) <?> "IfElse"
+
+    let parseIf = (.>*>.) ((>*>.) pif parseCondition) CurlyParse |>> (fun ((a, b)) -> If (a, b, Skip)) <?> "If"
+
+    let parseWhile = (.>*>.) ((>*>.) pwhile parseCondition) CurlyParse |>> (fun (a,b) -> While (a, b))
+
+    let parseAllocSpaced = (>>.) ((.>>) palloc spaces1) ((.>*>.) pid LevelOneParseAexpr) |>> (fun (a,b) -> Alloc (a, b))
+    let parseAllocParenthesised = (>>.) palloc (parenthesise ((.>>.) ((.>>) pid (pstring ", ")) LevelOneParseAexpr )) |>> (fun (a,b) -> Alloc (a, b))
+    let parseAlloc = (<|>) parseAllocSpaced parseAllocParenthesised
+
+    let parseFree = (>>.) pfree (parenthesise ((.>>.) ((.>>) LevelOneParseAexpr (pstring ", ")) LevelOneParseAexpr )) |>> (fun (a,b) -> Free (a, b))
+
+    let parsePrint = (>>.) (pstring "print") (parenthesise ( (.>>.) parseString (many ( (>>.) (pstring ", ") LevelOneParseAexpr  )) )) |>> (fun (a, b) -> Print (b, a))
+
+    let parseMem =
+        (.>>.) (squareBrackethise LevelOneParseAexpr) (spaces >>. pstring ":=" >>. spaces >>. LevelOneParseAexpr)
+        |>> (fun (a, b) -> MemWrite (a, b))
+        <?> "MemWrite"
+
+    let parseSeq =
+        choice [
+            (.>>.) LevelTwoParseStmnt (spaces >>. pchar ';' >>. spaces >>. LevelOneParseStmnt)
+            |>> (fun (head, tail) -> Seq (head, tail))
+            LevelTwoParseStmnt
+        ]
+        <?> "Seq"
+
+    
+
+    do oneStmntRef := parseSeq
+
+    do twoStmntRef := choice [parseVStmnt; parseDeclare; parseIfElse; parseIf; parseWhile; parseAlloc; parseFree; parsePrint; parseMem]
 
     let paexpr = LevelOneParseAexpr
 
     let pbexpr = LevelOneParseBexpr
 
-    let pstmnt = pstring "not implemented" |>> (fun _ -> Skip)
+    let pstmnt = LevelOneParseStmnt
     
     let pprogram = pstmnt |>> (fun s -> (Map.empty : program), s)
     
     let run = run
        
-    let runProgramParser = run (pprogram .>> eof)  
+    let runProgramParser = run (pprogram .>> spaces .>> eof)  
