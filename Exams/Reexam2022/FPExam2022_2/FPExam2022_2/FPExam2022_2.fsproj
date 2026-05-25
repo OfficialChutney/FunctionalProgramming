@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>FPExam2022</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="ExamInteractive.fsx" />
+    <Compile Include="Exam.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+  <ItemGroup />
+</Project>

@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment9\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{5B29568A-644B-4A90-D3E9-B4A6F93464F8}|Assignment9.fsproj|c:\\users\\noah8\\source\\repos\\functional programming\\assignment9\\parser.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}",
+      "RelativeMoniker": "D:0:0:{5B29568A-644B-4A90-D3E9-B4A6F93464F8}|Assignment9.fsproj|solutionrelative:parser.fs||{8A5AA6CF-46E3-4520-A70A-7393D15233E9}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Parser.fs",
+              "DocumentMoniker": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment9\\Parser.fs",
+              "RelativeDocumentMoniker": "Parser.fs",
+              "ToolTip": "C:\\Users\\noah8\\source\\repos\\Functional Programming\\Assignment9\\Parser.fs",
+              "RelativeToolTip": "Parser.fs",
+              "ViewState": "AgIAAFUAAAAAAAAAAAAAAMcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-04-26T22:43:05.449Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
