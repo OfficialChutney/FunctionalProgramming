@@ -208,7 +208,6 @@ open System
                 | _ -> acc) [] numbersToTest 
                 |> fun a -> 
                     if a.Length = 1 && a.Head <= oracle.max && a.Head >= 1 then a.Head, true else -1,false
-        printfn "%b" (snd equal)
 
         let restIsCorrect = 
             match snd equal with

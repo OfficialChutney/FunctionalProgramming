@@ -201,29 +201,140 @@
             (ys, x::zs)
 
     A: 
+        baz [1;2;5;7;9] -->
+        let ys,zs = baz [2;5;7;9]
+        (ys, x::zs) -->
+        let ys,zs = baz [5;7;9]
+        (x::ys, zs) -->
+        let ys,zs = baz [7;9]
+        (ys, x::zs) -->
+        let ys,zs = baz [9]
+        (ys, x::zs) -->
+        let ys,zs = baz []
+        (ys, x::zs) -->
+        ([], []) -->
+        ([], 9::[]) -->
+        ([], 7::9::[]) -->
+        ([], 5::7::9::[]) -->
+        (2::[], 5::7::9::[]) -->
+        (2::[], 1::5::7::9::[]) -->
+        ([2], [1;5;7;9])
+
+        I have tried to show the call chgain, which is extremely difficult since it is tupled
+        stored in variables before returned, but i have tried to show it where you can see,
+        that each recursive call to baz has an awaiting (::) operation, and only when all recursive calls has been made,
+        can the list be made, with every "add to head" operation executing on each awaiting stack.
+
+        
     
     *)
 (* Question 2.5: Continuations *)
 
-    let bazTail _ = failwith "not implemented"
+(*    let rec baz =
+        function
+        | []                 -> [], []
+        | x :: xs when foo x ->
+            let ys, zs = baz xs
+            (x::ys, zs)
+        | x :: xs ->
+            let ys, zs = baz xs
+            (ys, x::zs)*)
+
+    let bazTail (list : int list) = 
+
+        let rec aux (list : int list) (f) =
+            match list with
+            | [] -> f ([],[])
+            | x :: xs when foo x -> aux xs (fun a -> f ( x::(fst a), snd a ))
+            | x :: xs -> aux xs (fun a -> f ( fst a, x::(snd a) ))
+
+        aux list id
 
 (* 3: Balanced brackets *)
 
-      
     let explode (str : string) = [for c in str -> c]
     let implode (lst : char list) = lst |> List.toArray |> System.String
     
 (* Question 3.1: Balanced brackets *)
     
-    let balanced _ = failwith "not implemented"
-        
+    let balanced (str : string) = 
+
+        let pop (stack : char list) =
+            match stack with
+            | x::xs -> Some (x,xs)
+            | [] -> None
+
+        let push (c : char) (stack : char list) = c::stack
+
+        let rec aux (chars : char list) (stack : char list) =
+            match chars with
+            | x::xs when x = '(' -> aux xs (push ')' stack)
+            | x::xs when x = '{' -> aux xs (push '}' stack)
+            | x::xs when x = '[' -> aux xs (push ']' stack)
+            | x::xs when x = ')' || x = '}' || x = ']' -> 
+                match pop stack with
+                | Some (top, stack) -> 
+                    match x = top with
+                    | false -> false
+                    | true -> aux xs stack
+                | None -> false
+            | _ -> chars.IsEmpty && stack.IsEmpty
+
+        aux (explode str) []
+            
+         
 (* Question 3.2: Arbitrary delimiters *)
     
-    let balanced2 _ = failwith "not implemented"
-    
+    let balanced2 (m : Map<char, char>) (str : string) = 
+
+        let peepDoesMatch (top : char) (stack : char list) =
+            match stack with
+            | x::xs -> top = x    
+            | [] -> false
+
+        let pop (stack : char list) =
+            match stack with
+            | x::xs -> Some (xs)
+            | [] -> None
+
+        let push (c : char) (stack : char list) = c::stack
+
+        let rec aux (chars : char list) (stack : char list) =
+            match chars with
+            | x::xs -> 
+                let bool = 
+                    match m.TryFind x with
+                    | Some v -> aux xs (push v stack)
+                    | None -> false
+                match bool with
+                | true -> true
+                | false -> 
+                    match pop stack with
+                        | Some stack -> aux xs stack
+                        | None -> false
+            | _ -> chars.IsEmpty && stack.IsEmpty
+        
+        aux (explode str) []
+        
 (* Question 3.3: Matching brackets and palindromes *)    
     
-    let balanced3 _ = failwith "not implemented" 
+    (*let balanced3 (m : Map<char, char>) (str : string) = 
+        let peepDoesMatch (top : char) (stack : char list) =
+            match stack with
+            | x::xs -> top = x    
+            | [] -> false
+
+        let pop (stack : char list) =
+            match stack with
+            | x::xs -> Some (xs)
+            | [] -> None
+
+        let push (c : char) (stack : char list) = c::stack*)
+        
+
+
+        
+
     
     let symmetric _ = failwith "not implemented"
         
