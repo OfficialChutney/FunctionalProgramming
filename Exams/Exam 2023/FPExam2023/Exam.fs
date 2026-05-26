@@ -295,10 +295,7 @@
                 let x = (z*i + x)
                 let y = (z*(i+1) + x-1)
 
-                match x, y with
-                | 0,0 -> return 0,0
-                | 0,y -> return maxCollatz 1 y
-                | x,y -> return maxCollatz x y
+                return maxCollatz x y
             })
         |> Async.Parallel
         |> Async.RunSynchronously
