@@ -289,7 +289,7 @@
 
         let pop (stack : char list) =
             match stack with
-            | x::xs -> Some (xs)
+            | _::xs -> Some xs
             | [] -> None
 
         let push (c : char) (stack : char list) = c::stack
@@ -311,34 +311,7 @@
         
         aux (explode str) []
         
-(* Question 3.3: Matching brackets and palindromes *)    
-    
-(*    let balanced (str : string) = 
-
-        let pop (stack : char list) =
-            match stack with
-            | x::xs -> Some (x,xs)
-            | [] -> None
-
-        let push (c : char) (stack : char list) = c::stack
-
-        let rec aux (chars : char list) (stack : char list) =
-            match chars with
-            | x::xs when x = '(' -> aux xs (push ')' stack)
-            | x::xs when x = '{' -> aux xs (push '}' stack)
-            | x::xs when x = '[' -> aux xs (push ']' stack)
-            | x::xs when x = ')' || x = '}' || x = ']' -> 
-                match pop stack with
-                | Some (top, stack) -> 
-                    match x = top with
-                    | false -> false
-                    | true -> aux xs stack
-                | None -> false
-            | _ -> chars.IsEmpty && stack.IsEmpty
-
-        aux (explode str) []
-*)
-
+(* Question 3.3: Matching brackets and palindromes *)   
 
     let balanced3 (str : string) = 
 
@@ -623,7 +596,7 @@
     
     
     *)
-    let rec evalProg2 = state {
+    let rec evalProg2 : StateMonad<unit> = state {
         let! statement = getCurrentStmnt2
         
         match statement with
