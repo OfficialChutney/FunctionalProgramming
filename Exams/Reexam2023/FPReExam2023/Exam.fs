@@ -287,11 +287,6 @@
     
     let balanced2 (m : Map<char, char>) (str : string) = 
 
-        let peepDoesMatch (top : char) (stack : char list) =
-            match stack with
-            | x::xs -> top = x    
-            | [] -> false
-
         let pop (stack : char list) =
             match stack with
             | x::xs -> Some (xs)
@@ -318,43 +313,125 @@
         
 (* Question 3.3: Matching brackets and palindromes *)    
     
-    (*let balanced3 (m : Map<char, char>) (str : string) = 
-        let peepDoesMatch (top : char) (stack : char list) =
-            match stack with
-            | x::xs -> top = x    
-            | [] -> false
+(*    let balanced (str : string) = 
 
         let pop (stack : char list) =
             match stack with
-            | x::xs -> Some (xs)
+            | x::xs -> Some (x,xs)
             | [] -> None
 
-        let push (c : char) (stack : char list) = c::stack*)
-        
+        let push (c : char) (stack : char list) = c::stack
+
+        let rec aux (chars : char list) (stack : char list) =
+            match chars with
+            | x::xs when x = '(' -> aux xs (push ')' stack)
+            | x::xs when x = '{' -> aux xs (push '}' stack)
+            | x::xs when x = '[' -> aux xs (push ']' stack)
+            | x::xs when x = ')' || x = '}' || x = ']' -> 
+                match pop stack with
+                | Some (top, stack) -> 
+                    match x = top with
+                    | false -> false
+                    | true -> aux xs stack
+                | None -> false
+            | _ -> chars.IsEmpty && stack.IsEmpty
+
+        aux (explode str) []
+*)
 
 
+    let balanced3 (str : string) = 
+
+        let pop (stack : char list) =
+            match stack with
+            | x::xs -> Some (x,xs)
+            | [] -> None
+
+        let push (c : char) (stack : char list) = c::stack
         
+        let result = List.fold (fun (acc : bool * char list) (elem : char) -> 
+            match acc with
+            | (false, _) -> acc
+            | (x, stack) ->
+                match elem with
+                | '(' -> x, push ')' stack
+                | '{' -> x, push '}' stack
+                | '[' -> x, push ']' stack
+                | ')' | '}' | ']' -> 
+                    match pop stack with
+                    | Some (top, stack) -> 
+                        match elem = top with
+                        | false -> (false, stack)
+                        | true -> (true, stack)
+                    | None -> (false, stack)) (true, []) (explode str)
+
+        fst result && (snd result).IsEmpty
+
+ (* THIS IS ALSO A LOT SIMPLER U FUCKING DONUT
+ let balanced3 (str: string) =
+    let folder stack elem =
+        match stack, elem with
+        | None, _ -> None
+
+        | Some stack, '(' -> Some (')' :: stack)
+        | Some stack, '{' -> Some ('}' :: stack)
+        | Some stack, '[' -> Some (']' :: stack)
+
+        | Some (top :: rest), ')' | Some (top :: rest), '}' | Some (top :: rest), ']' 
+            when elem = top -> Some rest
+
+        | _ -> None
+
+    explode str
+    |> List.fold folder (Some [])
+    |> (=) (Some [])   *)    
 
     
-    let symmetric _ = failwith "not implemented"
+    let symmetric (str : string) =
+
+        match explode (str.ToLowerInvariant()) with
+        | [] -> true
+        | x::xs -> 
+            x::xs
+            |> List.filter (fun (a : char) -> System.Char.IsAsciiLetter a)
+            |> fun a -> List.splitAt (a.Length/2) a
+            |> fun a -> fst a, List.rev (snd a)
+            |> fun a -> 
+                List.fold2 (fun (acc : bool) (a : char) (b : char) -> if acc then a = b else acc) true (fst a) (snd a)
         
 (* Question 3.4: Parsing balanced brackets *)    
                
     open JParsec.TextParser
-    
         
+    let push (a : Parser<string>) (stack : Parser<string> list) = (a::stack)
+
+    let pop (stack : Parser<string> list) =
+        match stack with
+        | x::xs -> Some (x,xs)
+        | [] -> None
+
     let ParseBalanced, bref = createParserForwardedToRef<unit>()
-    
-    let parseBalancedAux = pstring "Your parser goes here"
-        
+
+    let parseBalancedAux = 
+        many (choice [pchar '{' >>. ParseBalanced .>> pchar '}'
+                      pchar '(' >>. ParseBalanced .>> pchar ')'
+                      pchar '[' >>. ParseBalanced .>> pchar ']']) |>> (fun _ -> ())
+
     // uncomment after you have done parseBalancedAUX
     
-    // let parseBalanced = parseBalancedAux .>> pstring "**END**"
-    // do bref := parseBalancedAux
+    let parseBalanced = parseBalancedAux .>> pstring "**END**"
+    do bref := parseBalancedAux
             
 (* Question 3.5: Parallel counting *)
 
-    let countBalanced _ = failwith "not implemented"
+    let countBalanced (lst : string list) (x : int) = 
+        List.chunkBySize (lst.Length / x) lst
+        |> List.map (fun (elem) -> async { 
+            return List.fold (fun (acc : int) (elem : string) -> if balanced3 elem then acc+1 else acc) 0 elem
+         })
+        |> Async.Parallel
+        |> Async.RunSynchronously
+        |> Array.fold (fun (acc : int) (elem : int) -> elem+acc) 0
 
 (* 4: BASIC *)
     
@@ -403,38 +480,64 @@
 
     type basicProgram = Map<uint32, stmnt>
     
-    let mkBasicProgram _ = failwith "not implemented"
-    let getStmnt _ = failwith "not implemented"
+    let mkBasicProgram (p : prog) : basicProgram = List.fold (fun (acc : Map<uint32, stmnt>) (elem : (uint32 * stmnt)) -> acc.Add elem ) Map.empty p
+    let getStmnt (l : uint32) (p : basicProgram) = Map.find l p
     
-    let nextLine _ = failwith "not implemented"
+    let rec nextLine (l : uint32) (p : basicProgram) = 
+        match p.TryFind (l+1u) with
+        | Some v -> l+1u
+        | None -> nextLine (l+1u) p
+
     
-    let firstLine _ = failwith "not implemented"
+    let firstLine (p : basicProgram) = (p.Keys |> Seq.toList |> List.sort)[0]
     
 (* Question 4.2: State *)
 
-    type state = unit // Replace by your type type goes here
+    type state = {
+        lineNumber: uint32
+        environment: Map<var,int>
+    }
     
-    let emptyState _ = failwith "not implemented"
+    let emptyState (p : basicProgram) = 
+        {lineNumber = firstLine p; environment = Map.empty}
     
     
-    let goto _ = failwith "not implemented"
+    let goto (l : uint32) (st : state) = 
+        {lineNumber = l; environment = st.environment}
 
-    let getCurrentStmnt _ = failwith "not implemented"
+    let getCurrentStmnt (p : basicProgram) (st : state) = Map.find st.lineNumber p
     
-    let update _ = failwith "not implemented"
+    let update (v : var) (a : int) (st : state) =
+        {lineNumber = st.lineNumber; environment = Map.add v a st.environment}
     
-    let lookup _ = failwith "not implemented"
+    let lookup (v : var) (st : state) = Map.find v st.environment
     
     
 (* Question 4.3: Evaluation *)
     
-    let evalExpr _ = failwith "not implemented"
+    let rec evalExpr (e : expr) (st : state) = 
+        match e with
+        | Num x -> x
+        | Lookup v -> lookup v st
+        | Plus (e1, e2) -> (evalExpr e1 st) + (evalExpr e2 st)
+        | Minus (e1, e2) -> (evalExpr e1 st) - (evalExpr e2 st)
     
-    
-    let step _ = failwith "not implemented"
+    let step (p : basicProgram) (st : state) = 
+        {lineNumber = nextLine st.lineNumber p; environment = st.environment }
   
-        
-    let evalProg _ = failwith "not implemented"
+    let evalProg (p : basicProgram) = 
+
+        let rec aux (st : state) (p : basicProgram) =
+            match getCurrentStmnt p st with
+            | If (e, l) -> 
+                match evalExpr e st with
+                | 0 -> aux (step p st) p
+                | _ -> aux (goto l st) p
+            | Let (v, e) -> aux (step p (update v (evalExpr e st) st)) p
+            | Goto l -> aux (goto l st) p
+            | End -> st
+
+        aux (emptyState p)        
     
 (* Question 4.4: State monad *)
     type StateMonad<'a> = SM of (basicProgram -> state -> 'a * state)  
@@ -452,15 +555,20 @@
       
     let evalSM p (SM f) = f p (emptyState p)
 
-    let goto2 _ = failwith "not implemented"
+    let goto2 (l : uint32) = 
+        SM (fun p st -> (), goto l st) 
     
-    let getCurrentStmnt2 _ = failwith "not implemented"
+    let getCurrentStmnt2 = 
+        SM (fun p st -> getCurrentStmnt p st, st) 
     
     
-    let lookup2 _ = failwith "not implemented"
-    let update2 _ = failwith "not implemented"
+    let lookup2 (v : var) = 
+        SM (fun p st -> lookup v st, st) 
+    let update2 (v : var) (a : int) = 
+        SM (fun p st -> (), update v a st)
     
-    let step2 _ = failwith "not implemented"
+    let step2 = 
+        SM (fun p st -> (), step p st)
 
 (* Question 4.5: State monad evaluation *)
 
@@ -473,7 +581,69 @@
 
     let state = StateBuilder()
 
-    let evalExpr2 _ = failwith "not implemented"
+    (*
+        let rec evalExpr (e : expr) (st : state) = 
+        match e with
+        | Num x -> x
+        | Lookup v -> Map.find v st.environment
+        | Plus (e1, e2) -> (evalExpr e1 st) + (evalExpr e2 st)
+        | Minus (e1, e2) -> (evalExpr e1 st) - (evalExpr e2 st)
     
-    let evalProg2 _ = failwith "not implemented"
+    *)
+
+    let rec evalExpr2 (e : expr) = state {
+        match e with
+        | Num x -> return x
+        | Lookup v -> return! lookup2 v
+        | Plus (e1, e2) -> 
+            let! a = (evalExpr2 e1) 
+            let! b = (evalExpr2 e2) 
+            return a + b
+        | Minus (e1, e2) -> 
+            let! a = (evalExpr2 e1) 
+            let! b = (evalExpr2 e2) 
+            return a - b
+    }
+    
+
+    (*
+        let evalProg (p : basicProgram) = 
+
+        let rec aux (st : state) (p : basicProgram) =
+            match getCurrentStmnt p st with
+            | If (e, l) -> 
+                match evalExpr e st with
+                | 0 -> aux (step p st) p
+                | _ -> aux (goto l st) p
+            | Let (v, e) -> aux (step p (update v (evalExpr e st) st)) p
+            | Goto l -> aux (goto l st) p
+            | End -> st
+
+        aux (emptyState p)      
+    
+    
+    *)
+    let rec evalProg2 = state {
+        let! statement = getCurrentStmnt2
+        
+        match statement with
+            | If (e, l) -> 
+                let! evaluated = evalExpr2 e
+                match evaluated with
+                | 0 -> 
+                    do! step2
+                    return! evalProg2
+                | _ ->
+                    do! goto2 l 
+                    return! evalProg2
+            | Let (v, e) -> 
+                let! evaluated = evalExpr2 e
+                do! update2 v evaluated
+                do! step2
+                return! evalProg2
+            | Goto l -> 
+                do! goto2 l
+                return! evalProg2
+            | End -> return ()
+    }
         
