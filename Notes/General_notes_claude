@@ -1,0 +1,159 @@
+ANALYSIS OF UPLOADED EXAMS
+===========================
+
+RECURRING TOPICS
+----------------
+Every exam (2022, 2023, 2023 re-exam, 2024) follows the same four-section
+structure in the same order.
+
+Section 1 - Discriminated Union / Recursive Data Type
+A custom recursive type is introduced each year:
+    2022: grayscale image quad-tree
+    2023: propositional logic (TT, FF, And, Or)
+    2023 re-exam: arithmetic expressions (Num, Add)
+    2024: transaction log (Empty, Pay, Receive)
+
+Questions always build in the same progression:
+    1.1  Basic evaluation / fold over the type
+    1.2  Structural transformation (negate, rotate, map)
+    1.3  A generic map or fold function, then use it to re-implement 1.1/1.2
+    1.4  A harder derived operation using the fold or a higher-order trick
+    1.5  An even harder variant (unique existential, iteration, parallelism)
+
+Section 2 - Code Comprehension
+Three functions named foo, bar, and baz are given without explanation.
+Questions are always:
+    2.1  State the types, describe behaviour (what not how), propose names,
+         state input constraints and what breaks if they are violated
+    2.2  Explain a specific code snippet or operator (pipe, and-keyword, etc.)
+    2.3  Re-implement one of the functions without explicit recursion
+    2.4  Prove one function is not tail recursive by HR-style evaluation stepping
+    2.5  Write a tail-recursive version using accumulator or continuation
+
+Section 3 - Numeric Sequence Algorithm
+A concrete computational problem is worked through step by step:
+    2022: matrix operations + parallel matrix initialisation
+    2023: Collatz conjecture
+    2023 re-exam: balanced bracket checker + JParsec balanced parser
+    2024: Caesar cipher encryption/decryption
+
+Sub-questions always follow this progression:
+    3.1  Basic sequence or operation, often with error handling
+    3.2  A fold-based or accumulator variant
+    3.3  Grouping results into Map<int, Set<int>>
+    3.4  Parallel version using Async.Parallel
+    3.5  JParsec parser (in some years this appears here, in others in section 4)
+
+Section 4 - Interpreter / State Machine
+A small language or machine is defined with types already given:
+    2022: stack machine (Push, Add, Mult)
+    2023: memory machine (Assign, While)
+    2023 re-exam: BASIC interpreter (If, Let, Goto, End)
+    2024: letterbox (post and read operations)
+
+Questions always follow this exact progression:
+    4.1  Define a state type and basic accessors
+    4.2  Direct (non-monadic) evaluation
+    4.3  StateMonad<'a> with ret, fail, bind, >>=, >>>=, and primitives
+    4.4  StateBuilder computation expression, re-implement evaluation with it
+    4.5  JParsec parser for the language or instruction set
+
+
+COMMON QUESTION PATTERNS
+-------------------------
+The following question types appear in every single exam:
+
+- "What are the types of foo, bar, and baz?"
+- "What do they do - focus on what, not how"
+- "What would be appropriate names?"
+- "Under what constraints does X behave reasonably, and what breaks otherwise?"
+- Tail recursion proof by HR-style evaluation stepping
+- Re-implement X without explicit recursion (List.fold, List.map, etc.)
+- Tail-recursive rewrite using accumulator or continuation-passing style
+- StateMonad<'a> with >>= and >>>=
+- StateBuilder computation expression with let!, do!, return, return!
+- JParsec parser
+- Async.Parallel with worker chunks
+
+
+EXPECTED CODING STYLE
+----------------------
+- Pattern matching via "match ... with" or "function" for all structural cases.
+  No if/then/else for things that should be pattern matched.
+- Operator aliases like .+. and .-. are provided and expected to be used.
+- Helper functions defined locally as "let rec aux ..." inside the outer function.
+- Continuation-passing tail recursion always initialised with id:
+      aux xs (fun r -> c (x + f r))   started with   aux xs id
+- Monadic chaining uses >>= and >>>=. Computation expressions use
+  let!, do!, return, return!.
+- Map.tryFind combined with Option.defaultValue rather than any mutation.
+- List.fold and List.foldBack preferred over explicit recursion in
+  the non-recursive rewrite questions.
+- No mutable state except inside JParsec parsers and the 2022 matrix question.
+
+
+DIFFICULTY PROGRESSION
+-----------------------
+Within each section questions get harder:
+    1.1-1.2  Straightforward recursion over the type
+    1.3-1.4  Generic fold/map, harder derived operations
+    1.5      Hardest variant, often involves quantifiers or iteration
+    2.1-2.2  Reading and reasoning, no coding required
+    2.3      Non-recursive rewrite, moderate
+    2.4      Written argument about tail recursion, requires careful steps
+    2.5      Tail-recursive implementation, moderately hard
+    3.1-3.2  Basic algorithm and fold variant
+    3.3      Map<int, Set<int>> grouping, a recurring trap
+    3.4-3.5  Parallel and parser, hardest in section 3
+    4.1-4.2  State record and direct evaluation, moderate
+    4.3-4.4  State monad and computation expressions, hard
+    4.5      JParsec parser, consistently the hardest question on the exam
+
+
+EDGE CASES AND MISTAKES THE EXAMS FOCUS ON
+-------------------------------------------
+- The "and" keyword for mutually recursive functions. One exam asks explicitly
+  why you cannot replace "and" with "let rec" and what would break.
+
+- Incomplete match patterns producing compiler warnings. The 2022 foo function
+  is intentionally written with guards that leave a gap, and the question asks
+  you to identify the warning and explain it.
+
+- The distinction between "not tail recursive" and "risks stack overflow".
+  A function with logarithmic recursion depth (like binary decomposition) is
+  not tail recursive but will never overflow in practice. A function with
+  linear depth over an unbounded list will. One exam question asks you to
+  identify which of two functions is actually dangerous.
+
+- Input constraints and what breaks without them:
+    foo (char -> int) only works on '0'-'9'
+    baz (int list -> int) only works on single-digit non-negative values
+    collatz only works on positive integers
+  The question always asks what the constraint is AND what goes wrong if violated.
+
+- HR-style evaluation steps must preserve the same value at every arrow.
+  Students often write incorrect reductions where intermediate steps do not
+  evaluate to the same final value. The key thing to show is a pending
+  operation (addition, cons, etc.) waiting on the stack around a recursive call.
+
+- Map<K, Set<V>> grouping must handle both cases:
+    Some s  ->  add the element to the existing set
+    None    ->  create a new singleton set
+  Forgetting the None case means the first element of each group is silently lost.
+
+- Continuation-passing: the outer call must be initialised with id, not with
+  a base value like 0 or []. Getting this wrong produces a function that
+  compiles but returns garbage.
+
+- StateMonad Bind has flipped arguments in the StateBuilder:
+      member this.Bind(f, x) = bind x f
+  This is counterintuitive and consistently causes mistakes. The monadicValue
+  comes in as the first argument (f) and the continuation as the second (x),
+  then they are passed to bind in reverse order.
+
+- >>>= discards the left result. If you accidentally use >>>= where you needed
+  >>= you silently lose a value and the program produces wrong results with
+  no type error to warn you.
+
+- Async.Parallel chunk boundaries: the last worker must extend to hi, not to
+  start + chunkSize - 1, otherwise the tail of the range is never processed.
