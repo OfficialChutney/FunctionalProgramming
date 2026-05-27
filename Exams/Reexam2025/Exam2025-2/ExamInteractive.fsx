@@ -11,3 +11,11 @@
 #load "Exam.fs"
 open Exam2025_Template.Exam
 open JParsec.TextParser;;
+
+run parseMoves
+   "Player X places a tile on row midRow and column midCol
+   Player O places a tile on row topRow and column leftCol
+   Player X places a tile on row topRow and column rightCol
+   Player O places a tile on row midRow and column leftCol
+   Player X places a tile on row botRow and column leftCol"
+   |> Result.map (playGame >> evalTTT >> Result.toOption >> Option.get)
