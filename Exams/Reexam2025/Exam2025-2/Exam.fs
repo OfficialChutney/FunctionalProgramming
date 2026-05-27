@@ -31,11 +31,25 @@ module Exam2025_Template.Exam
 
     (* Question 1.3 *)
  
-    let triangleNumberList x _ = failwith "not implemented"
+    let triangleNumberList (n : int) = 
+        let lists = List.map (fun i -> [1..i]) [1..n]
+        List.rev (List.fold (fun (acc : int list) (elem : int list) -> List.sum elem::acc) [] lists)
         
     (* Question 1.4 *)
  
-    let sequence f i l= failwith "not implemented"
+    let sequence (f : (int -> 'a -> 'a)) (i : 'a) (n : int) = 
+        
+        let rec aux (list : 'a list) (index : int) =
+            match index > n with
+            | true -> list
+            | false -> 
+                match list with
+                | [] -> aux [i] (index+1)
+                | x::xs -> aux ((f index x)::list) (index+1)
+
+        List.rev (aux [] 1)
+
+
         
      (* Question 1.5 *)
  

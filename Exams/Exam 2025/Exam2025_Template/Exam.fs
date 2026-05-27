@@ -437,7 +437,7 @@ module Exam2025_Template.Exam
     let newGame (numDiscs : int) : hanoi = 
         let makeDisc (i : int) : disc = i
 
-        Map.empty.Add(start, List.init numDiscs (fun (i : int) -> makeDisc (numDiscs - i))).Add(middle, List.empty).Add(goal, List.empty)
+        Map.empty.Add(start, List.init numDiscs (fun (i : int) -> makeDisc (i + 1))).Add(middle, List.empty).Add(goal, List.empty)
 
     let newGame2 (numDiscs : int) : hanoi = 
         let makeDisc (i : int) : disc = i
@@ -450,17 +450,17 @@ module Exam2025_Template.Exam
         let startPeg = Map.find start h
 
 
-        let rec isDecreasing (list : disc list) (i : int) =
-            match list[i]-1 = list[i+1] with
-            | true -> 
-                match i = 1 with
-                | true -> true
-                | false -> isDecreasing list (i+1)
-            | false -> false
+        let rec isIncreasing (list : disc list) (i : int) =
+            if i >= list.Length - 1 then
+                true
+            else if list[i] + 1 = list[i + 1] then
+                isIncreasing list (i + 1)
+            else
+                false
 
         match goalPeg.Length = 0 with
         | true -> false
-        | false -> goalPeg[goalPeg.Length-1] = 1 && isDecreasing goalPeg 0 && startPeg.Length = 0 && middlePeg.Length = 0
+        | false -> goalPeg[0] = 1 && isIncreasing goalPeg 0 && startPeg.Length = 0 && middlePeg.Length = 0
     
     (* Question 4.2 *)
     
@@ -478,9 +478,10 @@ module Exam2025_Template.Exam
     let place (p : peg) (d : disc) (h : hanoi) : Result<hanoi, error>  = 
         let list = Map.find p h
 
-        match list.IsEmpty || list[list.Length-1] < d with
-        | true -> Ok (Map.add p (d::list) h)
-        | false -> Error(Invalid(p,list[list.Length-1],d))
+        match list with
+        | [] -> Ok (Map.add p [d] h)
+        | top::_ when top > d -> Ok (Map.add p (d::list) h)
+        | top::_ -> Error (Invalid(p, d, top))
     
     (* Question 4.3 *)
     
