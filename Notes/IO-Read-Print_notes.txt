@@ -1,0 +1,459 @@
+KATTIS F# SIMPLE CHEAT SHEET
+============================
+
+Default style in this sheet:
+Use Console.ReadLine() when the input is line-based.
+Use recursion or List functions instead of for-loops.
+Use Console.In.ReadToEnd() only when input can be spread across many unknown lines.
+
+
+------------------------------------------------------------
+1. USEFUL INPUT / OUTPUT METHODS
+------------------------------------------------------------
+
+| Method / expression                              | What it does                                  | Example use                                      |
+|--------------------------------------------------|-----------------------------------------------|--------------------------------------------------|
+| Console.ReadLine()                               | Reads one line as a string                    | let line = Console.ReadLine()                    |
+| Console.ReadLine() |> int                        | Reads one line and converts it to int         | let n = Console.ReadLine() |> int                |
+| line.Split(' ')                                  | Splits a line by spaces                       | let parts = line.Split(' ')                      |
+| line.Split(' ') |> Array.map int                 | Splits a line into integers                   | let nums = line.Split(' ') |> Array.map int      |
+| line.Split(' ') |> Array.toList                  | Splits a line and turns it into a list        | let xs = line.Split(' ') |> Array.toList         |
+| line.Split(' ') |> Array.toList |> List.map int  | Splits a line into an int list                | let xs = line.Split(' ') |> Array.toList |> List.map int |
+| Console.In.ReadToEnd()                           | Reads all remaining input as one string       | let input = Console.In.ReadToEnd()               |
+| printfn "%d" x                                  | Prints an integer                             | printfn "%d" answer                             |
+| printfn "%s" s                                  | Prints a string                               | printfn "%s" text                               |
+| printfn "%A" value                              | Prints almost any value, useful for debugging | printfn "%A" nums                               |
+
+
+------------------------------------------------------------
+2. PRINTFN FORMATTING
+------------------------------------------------------------
+
+Common format strings:
+
+| Format | Use for                 | Example                    | Output example |
+|--------|-------------------------|----------------------------|----------------|
+| "%d"  | Integer                 | printfn "%d" 42           | 42             |
+| "%i"  | Integer                 | printfn "%i" 42           | 42             |
+| "%s"  | String                  | printfn "%s" "hello"     | hello          |
+| "%c"  | Character               | printfn "%c" 'a'          | a              |
+| "%b"  | Boolean                 | printfn "%b" true         | true           |
+| "%f"  | Float                   | printfn "%f" 3.14         | 3.140000       |
+| "%.2f" | Float with 2 decimals   | printfn "%.2f" 3.14159     | 3.14           |
+| "%A"  | Any F# value/debugging  | printfn "%A" [1; 2; 3]   | [1; 2; 3]      |
+| "%%"  | A literal percent sign  | printfn "100%%"           | 100%           |
+
+For beginner Kattis problems:
+Use "%d" for integers.
+"%d" and "%i" behave the same for normal int values.
+Use "%A" only for debugging, not final Kattis output.
+
+
+------------------------------------------------------------
+3. DEFAULT TEMPLATE WITH READLINE
+------------------------------------------------------------
+
+Use this when the input has a clear line structure.
+
+open System
+
+let n = Console.ReadLine() |> int
+
+let nums =
+    Console.ReadLine().Split(' ')
+    |> Array.toList
+    |> List.map int
+
+let answer = nums |> List.sum
+
+printfn "%d" answer
+
+
+------------------------------------------------------------
+4. READING ONE INTEGER
+------------------------------------------------------------
+
+Input:
+5
+
+Code:
+
+open System
+
+let n = Console.ReadLine() |> int
+
+printfn "%d" n
+
+
+------------------------------------------------------------
+5. READING TWO INTEGERS ON ONE LINE
+------------------------------------------------------------
+
+Input:
+3 7
+
+Code:
+
+open System
+
+let parts =
+    Console.ReadLine().Split(' ')
+    |> Array.map int
+
+let a = parts.[0]
+let b = parts.[1]
+
+printfn "%d" (a + b)
+
+
+------------------------------------------------------------
+6. READING MANY INTEGERS ON ONE LINE AS A LIST
+------------------------------------------------------------
+
+Input:
+1 2 3 4 5
+
+Code:
+
+open System
+
+let nums =
+    Console.ReadLine().Split(' ')
+    |> Array.toList
+    |> List.map int
+
+let answer = nums |> List.sum
+
+printfn "%d" answer
+
+
+------------------------------------------------------------
+7. READING N, THEN N NUMBERS
+------------------------------------------------------------
+
+Input:
+5
+1 2 3 4 5
+
+Code:
+
+open System
+
+let n = Console.ReadLine() |> int
+
+let nums =
+    Console.ReadLine().Split(' ')
+    |> Array.toList
+    |> List.map int
+
+let answer = nums |> List.sum
+
+printfn "%d" answer
+
+
+------------------------------------------------------------
+8. READING MULTIPLE TEST CASES WITHOUT FOR-LOOPS
+------------------------------------------------------------
+
+Input:
+3
+1
+2
+4
+
+Recommended recursive style:
+
+open System
+
+let t = Console.ReadLine() |> int
+
+let solve n =
+    n * 2
+
+let rec handleCases remaining =
+    if remaining > 0 then
+        let n = Console.ReadLine() |> int
+        let answer = solve n
+        printfn "%d" answer
+        handleCases (remaining - 1)
+
+handleCases t
+
+What happens:
+- remaining starts as the number of test cases.
+- Each call reads one test case.
+- Then it calls itself with one fewer remaining.
+- When remaining is 0, it stops.
+
+
+------------------------------------------------------------
+9. READING MANY VALUES INTO A LIST WITHOUT FOR-LOOPS
+------------------------------------------------------------
+
+Input:
+3
+10
+20
+30
+
+Code:
+
+open System
+
+let t = Console.ReadLine() |> int
+
+let rec readMany count acc =
+    if count = 0 then
+        List.rev acc
+    else
+        let n = Console.ReadLine() |> int
+        readMany (count - 1) (n :: acc)
+
+let nums = readMany t []
+
+printfn "%A" nums
+
+Important:
+n :: acc adds n to the front of the list.
+Because this builds the list backwards, use List.rev at the end.
+
+
+------------------------------------------------------------
+10. PATTERN MATCHING
+------------------------------------------------------------
+
+let result =
+    match n with
+    | 0 -> "zero"
+    | 1 -> "one"
+    | _ -> "many"
+
+printfn "%s" result
+
+
+------------------------------------------------------------
+11. LIST BASICS
+------------------------------------------------------------
+
+let nums = [10; 20; 30]
+
+let first =
+    match nums with
+    | x :: xs -> x
+    | [] -> 0
+
+let total = nums |> List.sum
+let sorted = nums |> List.sort
+let reversed = nums |> List.rev
+
+let doubled =
+    nums |> List.map (fun x -> x * 2)
+
+let onlyBig =
+    nums |> List.filter (fun x -> x > 15)
+
+
+------------------------------------------------------------
+12. RECURSIVE SUM WITH ACCUMULATOR
+------------------------------------------------------------
+
+let rec sum acc xs =
+    match xs with
+    | x :: rest -> sum (acc + x) rest
+    | [] -> acc
+
+let answer = sum 0 [1; 2; 3]
+
+printfn "%d" answer
+
+
+Trace:
+
+sum 0 [1; 2; 3]
+=> sum (0 + 1) [2; 3]
+=> sum 1 [2; 3]
+=> sum (1 + 2) [3]
+=> sum 3 [3]
+=> sum (3 + 3) []
+=> sum 6 []
+=> 6
+
+
+------------------------------------------------------------
+13. EXAMPLE: N-SUM
+------------------------------------------------------------
+
+Problem:
+Read n.
+Read n numbers.
+Print their sum.
+
+Input:
+5
+1 2 3 4 5
+
+Code:
+
+open System
+
+let n = Console.ReadLine() |> int
+
+let nums =
+    Console.ReadLine().Split(' ')
+    |> Array.toList
+    |> List.map int
+
+let rec sum acc xs =
+    match xs with
+    | x :: rest -> sum (acc + x) rest
+    | [] -> acc
+
+let answer = sum 0 nums
+
+printfn "%d" answer
+
+
+------------------------------------------------------------
+14. EXAMPLE: LAST FACTORIAL DIGIT WITHOUT FOR-LOOPS
+------------------------------------------------------------
+
+Problem:
+First line is t, the number of test cases.
+Each of the next t lines contains n.
+Print the last digit of n! for each n.
+
+Input:
+3
+1
+2
+5
+
+Code:
+
+open System
+
+let rec fac acc n =
+    if n > 0 then
+        fac (acc * n) (n - 1)
+    else
+        acc
+
+let lastDigit n =
+    (fac 1 n) % 10
+
+let t = Console.ReadLine() |> int
+
+let rec handleCases remaining =
+    if remaining > 0 then
+        let n = Console.ReadLine() |> int
+        printfn "%d" (lastDigit n)
+        handleCases (remaining - 1)
+
+handleCases t
+
+
+------------------------------------------------------------
+15. EXAMPLE: REVERSED BINARY NUMBERS
+------------------------------------------------------------
+
+Problem:
+Read an integer.
+Convert it to binary.
+Reverse the binary digits.
+Convert back to decimal.
+
+Example:
+13 -> binary 1101 -> reversed 1011 -> decimal 11
+
+Code:
+
+open System
+
+let n = Console.ReadLine() |> int
+
+let binary = Convert.ToString(n, 2)
+
+let reversedBinary =
+    binary
+    |> Seq.rev
+    |> Seq.toArray
+    |> String
+
+let answer = Convert.ToInt32(reversedBinary, 2)
+
+printfn "%d" answer
+
+
+------------------------------------------------------------
+16. WHEN TO USE READTOEND
+------------------------------------------------------------
+
+Use ReadToEnd when the input may be spread across multiple lines and you do not care about line breaks.
+
+Example input:
+5
+1 2
+3 4
+5
+
+Code:
+
+open System
+
+let nums =
+    Console.In.ReadToEnd().Split(
+        [|' '; '\n'; '\t'; '\r'|],
+        StringSplitOptions.RemoveEmptyEntries
+    )
+    |> Array.toList
+    |> List.map int
+
+let n = nums.Head
+let values = nums.Tail
+
+let answer = values |> List.sum
+
+printfn "%d" answer
+
+
+------------------------------------------------------------
+17. QUICK RULES
+------------------------------------------------------------
+
+- Prefer Console.ReadLine() when each line has a clear meaning.
+- Use recursion instead of for-loops if loops are not allowed.
+- Use List.map, List.filter, List.sum, and List.iter for functional style.
+- Use Console.In.ReadToEnd() when input formatting is flexible or unknown.
+- Kattis only wants the answer. Do not print explanations.
+- Arrays use nums.[0], lists use pattern matching or List.head/List.tail.
+- Use |> to pass values into functions.
+- Use printfn "%d" for integers.
+- Use printfn "%s" for strings.
+- Use printfn "%A" for debugging.
+
+
+------------------------------------------------------------
+18. LIST APPEND OPERATOR (@)
+------------------------------------------------------------
+
+@ sætter to lister sammen:
+
+[1;2;3] @ [4;5;6]   // giver [1;2;3;4;5;6]
+
+Forskellen fra :: er:
+- :: sætter et enkelt element FORREST:   1 :: [2;3]   // giver [1;2;3]
+- @  sætter to lister sammen:            [1;2] @ [3]  // giver [1;2;3]
+
+For at sætte et enkelt element BAGERST, wrap det i en liste:
+[1;2;3] @ [4]        // giver [1;2;3;4]
+
+Advarsel:
+@ er lineær med hensyn til længden af den venstre liste.
+Brug :: når du kan (forrest er billigt, bagerst er dyrt).
+
+Eksempel — reverse uden hjælpefunktioner:
+
+let rec reverse (lst : int list) =
+    match lst with
+    | x :: xs -> reverse xs @ [x]
+    | []      -> []
