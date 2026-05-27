@@ -334,11 +334,6 @@ module Exam2025_Template.Exam
 
     let inbox size (mbox : MailboxProcessor<message>) =  
         let t = setTable size
-        
-        let getTableArray =
-            match t with
-            | T a -> a
-
 
         let rec messageLoop (pending : (int * AsyncReplyChannel<unit>) list) = async {
             let! message = mbox.Receive()
