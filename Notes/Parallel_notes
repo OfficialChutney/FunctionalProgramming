@@ -1,0 +1,89 @@
+PARALLEL PROGRAMMING
+====================
+
+THE MODEL USED IN THE EXAMS
+-----------------------------
+The exams use F#'s Async workflow with Async.Parallel. The pattern is always:
+
+    1. Split the input range into chunks.
+    2. Wrap each chunk's computation in async { return ... }.
+    3. Collect the async values into a sequence.
+    4. Run them all with Async.Parallel |> Async.RunSynchronously.
+    5. Combine the partial results (usually Array.fold or Array.maxBy).
+
+
+CANONICAL TEMPLATE - LEARN THIS SHAPE
+---------------------------------------
+
+    let parallelMax (lo : int) (hi : int) (nWorkers : int) : int =
+        let chunkSize = max 1 ((hi - lo + 1) / nWorkers)
+
+        Seq.init nWorkers (fun i ->
+            let start = lo + i * chunkSize
+            let stop  = if i = nWorkers - 1 then hi
+                        else start + chunkSize - 1
+            async {
+                return [start..stop] |> List.maxBy (fun x -> someExpensiveFunction x)
+            })
+        |> Async.Parallel
+        |> Async.RunSynchronously
+        |> Array.maxBy (fun x -> someExpensiveFunction x)
+
+The last Array.maxBy is necessary because each worker returns only a local
+maximum. You still need a sequential combine step over the nWorkers partial
+results to find the global answer.
+
+
+THE 2022 PARALLEL INIT PATTERN
+--------------------------------
+The 2022 exam shows a different use case: parallel initialisation of a
+mutable 2D array.
+
+    let parInit f rows cols =
+        let m = init (fun _ _ -> 0) rows cols
+        Array.init (rows * cols) (fun i -> (i / cols, i % cols))
+        |> Seq.map (fun (r, c) -> async { set m r c (f r c) })
+        |> Async.Parallel
+        |> Async.Ignore
+        |> Async.RunSynchronously
+        m
+
+Each async block writes to a unique cell of a shared mutable array.
+This is safe because no two workers write to the same cell.
+Async.Ignore discards the unit array result before RunSynchronously.
+
+
+CHUNKING EDGE CASES
+--------------------
+The most common exam mistake is not handling the last chunk correctly.
+If nWorkers does not divide the range evenly, the last worker must take
+the remainder:
+
+    let stop = if i = nWorkers - 1 then hi else start + chunkSize - 1
+
+Without this, the last few elements of the range are silently skipped
+and the answer will be wrong.
+
+
+WHAT THE EXAMS DO NOT TEST
+---------------------------
+- Cancellation tokens
+- MailboxProcessor / agents
+- Lock-based synchronisation
+- Task-based parallelism (System.Threading.Tasks)
+
+Stick to async { }, Async.Parallel, and Async.RunSynchronously.
+That is the entire parallel API the exams use.
+
+
+COMMON MISTAKES
+---------------
+- Calling Async.RunSynchronously on each individual async instead of on the
+  combined Async.Parallel result. This runs everything sequentially and
+  defeats the purpose entirely.
+- Forgetting the final combine step. Each worker returns a local answer,
+  not the global one.
+- Off-by-one in chunk boundaries, especially for the last worker.
+  Always use "if i = nWorkers - 1 then hi" for the final stop value.
+- Using Array.Parallel.map from System.Array instead of Async.Parallel.
+  The exams explicitly use the async workflow style.
