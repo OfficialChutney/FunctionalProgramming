@@ -1,0 +1,128 @@
+STATE MONADS
+============
+
+WHY THEY EXIST
+--------------
+Many Section 4 problems require threading a state value (a stack, a memory
+block, a register file, a letterbox) through a sequence of operations.
+Without a monad you end up writing "let x, s1 = f s0" repeatedly.
+The state monad hides that plumbing.
+
+
+THE STANDARD DEFINITION - MEMORISE THIS
+-----------------------------------------
+Every exam uses the exact same shape:
+
+    type StateMonad<'a> = SM of (State -> ('a * State) option)
+
+    let ret x         = SM (fun s -> Some (x, s))
+    let fail          = SM (fun _ -> None)
+
+    let bind f (SM a) : StateMonad<'b> =
+        SM (fun s ->
+            match a s with
+            | None         -> None
+            | Some (x, s') ->
+                let (SM g) = f x
+                g s')
+
+    let (>>=)  x f = bind f x
+    let (>>>=) x y = x >>= (fun _ -> y)   // sequence, discard left result
+
+The option wrapper models failure (e.g. popping an empty stack, reading an
+out-of-bounds address). When there is no failure mode the exam sometimes uses
+'a * State directly, but the option version is more common.
+
+
+WRITING PRIMITIVES
+------------------
+Once bind and ret exist, every other operation is just an SM that reads or
+modifies the state:
+
+    // Read something from state without changing it
+    let getReg r =
+        SM (fun st -> Some (Map.tryFind r st.regs |> Option.defaultValue 0, st))
+
+    // Modify state, return unit
+    let setReg r v =
+        SM (fun st -> Some ((), { st with regs = Map.add r v st.regs }))
+
+The pattern is always:
+    SM (fun s -> Some (result, newState))   for success
+    SM (fun _ -> None)                      for unconditional failure
+
+
+CHAINING WITH >>= AND >>>=
+---------------------------
+Use >>= when you need the result of the left side:
+
+    evalExpr e1 >>= (fun v1 ->
+    evalExpr e2 >>= (fun v2 ->
+    ret (v1 + v2)))
+
+Use >>>= when you don't need the result (sequencing effects):
+
+    setReg "a" 5 >>>= advancePC >>>= evalProg
+
+>>>= is shorthand for >>= (fun _ -> ...).
+Use it whenever the left-hand side produces unit or you simply don't
+need its value.
+
+
+THE COMPUTATION EXPRESSION BUILDER - ALSO MEMORISE
+----------------------------------------------------
+The builder is identical in every exam:
+
+    type StateBuilder() =
+        member this.Bind(f, x)    = bind x f      // arguments are FLIPPED vs bind
+        member this.Return(x)     = ret x
+        member this.ReturnFrom(x) = x
+        member this.Combine(a, b) = a >>= (fun _ -> b)
+
+    let state = StateBuilder()
+
+Note the argument order in Bind: F# passes (monadicValue, continuationFunction)
+to Bind, which then calls bind continuationFunction monadicValue.
+This is why the arguments are flipped relative to your bind definition.
+
+
+COMPUTATION EXPRESSION SYNTAX
+------------------------------
+Once the builder exists you can write monadic code that looks almost imperative.
+
+    let rec evalExpr2 e = state {
+        match e with
+        | Num x    -> return x
+        | Lookup v -> return! lookup2 v          // return! unwraps an existing SM
+        | Plus (e1, e2) ->
+            let! v1 = evalExpr2 e1               // let! binds the unwrapped result
+            let! v2 = evalExpr2 e2
+            return (v1 + v2)
+    }
+
+    let rec evalProg2 prog = state {
+        match prog with
+        | [] -> return ()
+        | s :: rest ->
+            do! evalStmnt2 s                     // do! for effects that return unit
+            return! evalProg2 rest
+    }
+
+
+LET! vs DO! vs RETURN!
+-----------------------
+let! x = m      m produces a value you need
+do! m           m produces unit, you just want the effect
+return x        wrap a plain value into the monad
+return! m       pass through an already-monadic value (use for tail calls)
+
+
+COMMON MISTAKES
+---------------
+- Writing "return! ret x" - this double-wraps. Just write "return x".
+- Using let! when the monad produces unit and then never using the binding.
+  Use do! instead or you get a type error.
+- Forgetting that >>>= discards the left result. If you need the value, use >>=.
+- Implementing Bind with arguments the wrong way round. The flip is
+  counterintuitive but every exam uses the same pattern, so memorise it:
+      member this.Bind(f, x) = bind x f
