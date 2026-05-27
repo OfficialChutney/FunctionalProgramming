@@ -342,7 +342,9 @@ open System
     let pop = 
         SM (fun s -> 
             match s.IsEmpty with
-            | true -> None
+            | true -> 
+                let (SM f) = fail
+                f s
             | false -> Some (s.Head, s.Tail))
 
 

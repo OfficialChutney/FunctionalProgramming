@@ -341,7 +341,7 @@
     type mem = {
         mutable memory: int array
         size: int
-    } 
+    }
     let emptyMem (size : int) = 
         let mutable mem = Array.init size (fun _ -> 0)
         { memory = mem; size = size }

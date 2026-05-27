@@ -1,0 +1,35 @@
+Når man laver en state monad som en "2'er," skal man næsten altid
+kalde sin tidligere defineret funktion, og smide resultatet i en Ok.
+
+type StateMonad<'a> = SM of (mem -> ('a * mem) option)  
+
+let assign (m : mem) (i : int) (v : int) = 
+        m.memory[i] <- v
+        m
+
+
+let assign2 (i : int) (v : int) = 
+        SM (fun m ->
+            match 0 <= i && i < m.size with
+            | true ->  Some ((), assign m i v)
+            | false -> None)
+
+
+Ovenfor er et eksempel. Vi bliver bedt om at lave en assign som sætter en variable
+på en mutable array.
+
+I assign2 bliver vi bedt om at tjekke på nogle parametre (0 <= i && i < m.size),
+men ellers skal de det samme. Mem er vores "state," og en State monad har ALTID
+opsætningen Ok/Some (RETUR, STATE). Da vi bliver bedt om at returnere unit, og assign 
+opdatere vores state, sender vi Some ((),assign m i v). Assign returnere en opdateret state.
+
+Når vi laver monads, skal vi ALTID have en state som det sidste i vores tuple.
+
+Siger opgaven den skal returnere StateMonad<unit>, skal returtypen være Some ((), state).
+Siger opgaven den skal returnere StateMonad<bool>, skal returtypen være Some (true, state)
+
+Hvis din statemonad ligner: type StateMonad<'a> = SM of (mem -> ('a * mem) option) 
+    er det Some eller None.
+
+Hvis din statemonad ligner StateMonad<'a> = SM of (mem -> Result<('a * mem), error>)
+        er det Ok eller None.

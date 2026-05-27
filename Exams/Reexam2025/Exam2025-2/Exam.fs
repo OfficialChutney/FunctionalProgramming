@@ -343,7 +343,6 @@ module Exam2025_Template.Exam
 
     let doMove (p : player) (r : row) (c : col) (st : state) = 
 
-
         let place (p : player) (r : row) (c : col) (b : board) : state = 
         
             let determineState (b : board) =
@@ -401,7 +400,7 @@ module Exam2025_Template.Exam
     (* Question 4.3 *)
     
     type ticTacToeMonad<'a> = TTT of (state -> Result<'a * state, error>)  
-  
+
     let ret x = TTT (fun h -> (Ok (x, h)))  
     let fail err = TTT (fun _ -> Error err)  
     let bind f (TTT a)  =  
@@ -416,10 +415,7 @@ module Exam2025_Template.Exam
     let (>>>=) a b = a >>= (fun _ -> b)
 
     let evalTTT (TTT f) =
-        Running(X, empty) |> f |> Result.map fst    
-
-    
-    
+        Running(X, empty) |> f |> Result.map fst        
     
     let doMove2 (p : player) (r : row) (c : col) = 
         TTT (fun st -> 

@@ -1,0 +1,78 @@
+PARSING WITH JPARSEC
+====================
+ 
+THE CORE IDEA
+-------------
+JParsec is a combinator-based parsing library. You build complex parsers by
+combining small primitive parsers using operators. Every parser has type
+Parser<'a>, meaning it consumes some input and produces a value of type 'a.
+ 
+ 
+PRIMITIVES
+----------
+pchar 'x'       matches exactly the character 'x'
+pstring "PUSH"  matches exactly the string "PUSH"
+pint32          matches a signed integer
+satisfy f       matches any single char where f c = true
+many p          matches p zero or more times, returns 'a list
+many1 p         matches p one or more times, returns 'a list
+ 
+ 
+COMBINING PARSERS - THE OPERATORS
+----------------------------------
+p1 >>. p2      run p1 then p2, keep p2's result (discard left)
+p1 .>> p2      run p1 then p2, keep p1's result (discard right)
+p1 .>>. p2     run both, keep both as a tuple
+p1 <|> p2      try p1, if it fails try p2
+p  |>> f       run p, apply f to the result (map)
+choice [p1; p2; p3]   try each in order, take the first that succeeds
+ 
+The mnemonic for >>. and .>> is: the dot is on the side you keep.
+ 
+ 
+FORWARDED REFERENCES - FOR RECURSIVE GRAMMARS
+----------------------------------------------
+When a grammar is recursive (e.g. expressions containing sub-expressions),
+you need a forward reference:
+ 
+    let ParseExpr, eref = createParserForwardedToRef<expr>()
+    // define parseExpr using ParseExpr for the recursive call
+    do eref := parseExpr   // wire it up at the end
+ 
+ParseExpr is the parser you use inside other parsers.
+eref is the ref cell you assign the real implementation to once it is defined.
+Do not forget the "do eref := ..." line or the parser will loop or fail at runtime.
+ 
+ 
+TYPICAL EXAM PATTERN - SECTION 4.5
+------------------------------------
+Every exam asks you to parse an instruction set or expression language.
+The pattern is always:
+ 
+    // 1. Parse a keyword, discard it, then parse the argument(s)
+    let parseSet =
+        pstring "SET" >>. pws1 >>. pReg .>> pws1 .>>. pint32
+        |>> (fun (r, v) -> Set(r, v))
+ 
+    // 2. Combine alternatives with choice
+    let parseInstr = choice [parseSet; parseCopy; parseInc; ...]
+ 
+The 2022 exam (stack machine) also shows parsing a sequence of instructions
+separated by newlines using a forwarded reference, which is harder:
+ 
+    let programParse, pref = createParserForwardedToRef<stackProgram>()
+    let singleCmd = ...
+    let seqCmd    = cmdParse .>> pcmdsep .>>. programParse
+                    |>> (fun (c, cs) -> c :: cs)
+    do pref := choice [singleCmd; seqCmd]
+ 
+ 
+COMMON MISTAKES
+---------------
+- Using >> (Haskell-style) instead of >>.  JParsec uses .>> and .>>.
+- Forgetting "do eref := ..." at the bottom. The parser silently loops.
+- Wrong associativity when chaining .>>. - it produces nested tuples.
+  Use pattern matching in |>> to destructure, e.g. |>> (fun (a, b) -> ...).
+- Using <|> when two alternatives share a prefix. JParsec has no backtracking
+  by default, so if p1 partially consumes input and then fails, p2 never runs.
+  Order your choice list so more specific parsers come first.

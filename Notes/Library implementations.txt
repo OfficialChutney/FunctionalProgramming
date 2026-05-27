@@ -1,0 +1,949 @@
+module SimpleHigherOrderImplementations
+
+// ============================================================
+// Helpers
+// ============================================================
+
+module Helpers =
+
+    let rec rev list =
+        let rec loop acc xs =
+            match xs with
+            | [] -> acc
+            | x :: rest -> loop (x :: acc) rest
+        loop [] list
+
+    let rec append xs ys =
+        match xs with
+        | [] -> ys
+        | x :: rest -> x :: append rest ys
+
+    let rec length xs =
+        match xs with
+        | [] -> 0
+        | _ :: rest -> 1 + length rest
+
+    let optionGet opt =
+        match opt with
+        | Some x -> x
+        | None -> failwith "Option has no value"
+
+
+// ============================================================
+// Simple List implementations
+// ============================================================
+
+module MyList =
+
+    let empty<'T> : 'T list = []
+
+    let isEmpty xs =
+        match xs with
+        | [] -> true
+        | _ -> false
+
+    let singleton x = [x]
+
+    let head xs =
+        match xs with
+        | x :: _ -> x
+        | [] -> failwith "Empty list"
+
+    let tail xs =
+        match xs with
+        | _ :: rest -> rest
+        | [] -> failwith "Empty list"
+
+    let tryHead xs =
+        match xs with
+        | x :: _ -> Some x
+        | [] -> None
+
+    let tryTail xs =
+        match xs with
+        | _ :: rest -> Some rest
+        | [] -> None
+
+    let rec last xs =
+        match xs with
+        | [] -> failwith "Empty list"
+        | [x] -> x
+        | _ :: rest -> last rest
+
+    let rec tryLast xs =
+        match xs with
+        | [] -> None
+        | [x] -> Some x
+        | _ :: rest -> tryLast rest
+
+    let length xs = Helpers.length xs
+
+    let rev xs = Helpers.rev xs
+
+    let append xs ys = Helpers.append xs ys
+
+    let rec concat lists =
+        match lists with
+        | [] -> []
+        | xs :: rest -> append xs (concat rest)
+
+    let map f xs =
+        let rec loop acc xs =
+            match xs with
+            | [] -> rev acc
+            | x :: rest -> loop (f x :: acc) rest
+        loop [] xs
+
+    let mapi f xs =
+        let rec loop i acc xs =
+            match xs with
+            | [] -> rev acc
+            | x :: rest -> loop (i + 1) (f i x :: acc) rest
+        loop 0 [] xs
+
+    let rec iter f xs =
+        match xs with
+        | [] -> ()
+        | x :: rest ->
+            f x
+            iter f rest
+
+    let iteri f xs =
+        let rec loop i xs =
+            match xs with
+            | [] -> ()
+            | x :: rest ->
+                f i x
+                loop (i + 1) rest
+        loop 0 xs
+
+    let fold f state xs =
+        let rec loop acc xs =
+            match xs with
+            | [] -> acc
+            | x :: rest -> loop (f acc x) rest
+        loop state xs
+
+    let rec foldBack f xs state =
+        match xs with
+        | [] -> state
+        | x :: rest -> f x (foldBack f rest state)
+
+    let reduce f xs =
+        match xs with
+        | [] -> failwith "Empty list"
+        | x :: rest -> fold f x rest
+
+    let rec reduceBack f xs =
+        match xs with
+        | [] -> failwith "Empty list"
+        | [x] -> x
+        | x :: rest -> f x (reduceBack f rest)
+
+    let filter predicate xs =
+        let rec loop acc xs =
+            match xs with
+            | [] -> rev acc
+            | x :: rest when predicate x -> loop (x :: acc) rest
+            | _ :: rest -> loop acc rest
+        loop [] xs
+
+    let choose chooser xs =
+        let rec loop acc xs =
+            match xs with
+            | [] -> rev acc
+            | x :: rest ->
+                match chooser x with
+                | Some y -> loop (y :: acc) rest
+                | None -> loop acc rest
+        loop [] xs
+
+    let collect f xs =
+        let rec loop acc xs =
+            match xs with
+            | [] -> rev acc
+            | x :: rest -> loop (append (rev (f x)) acc) rest
+        loop [] xs
+
+    let exists predicate xs =
+        let rec loop xs =
+            match xs with
+            | [] -> false
+            | x :: rest -> predicate x || loop rest
+        loop xs
+
+    let forall predicate xs =
+        let rec loop xs =
+            match xs with
+            | [] -> true
+            | x :: rest -> predicate x && loop rest
+        loop xs
+
+    let rec find predicate xs =
+        match xs with
+        | [] -> failwith "No matching element"
+        | x :: rest -> if predicate x then x else find predicate rest
+
+    let rec tryFind predicate xs =
+        match xs with
+        | [] -> None
+        | x :: rest -> if predicate x then Some x else tryFind predicate rest
+
+    let findIndex predicate xs =
+        let rec loop i xs =
+            match xs with
+            | [] -> failwith "No matching element"
+            | x :: rest -> if predicate x then i else loop (i + 1) rest
+        loop 0 xs
+
+    let tryFindIndex predicate xs =
+        let rec loop i xs =
+            match xs with
+            | [] -> None
+            | x :: rest -> if predicate x then Some i else loop (i + 1) rest
+        loop 0 xs
+
+    let pick chooser xs =
+        match tryFind (fun x -> chooser x |> Option.isSome) xs with
+        | Some x -> Helpers.optionGet (chooser x)
+        | None -> failwith "No matching element"
+
+    let tryPick chooser xs =
+        let rec loop xs =
+            match xs with
+            | [] -> None
+            | x :: rest ->
+                match chooser x with
+                | Some y -> Some y
+                | None -> loop rest
+        loop xs
+
+    let partition predicate xs =
+        let rec loop yes no xs =
+            match xs with
+            | [] -> rev yes, rev no
+            | x :: rest when predicate x -> loop (x :: yes) no rest
+            | x :: rest -> loop yes (x :: no) rest
+        loop [] [] xs
+
+    let rec zip xs ys =
+        match xs, ys with
+        | [], [] -> []
+        | x :: xr, y :: yr -> (x, y) :: zip xr yr
+        | _ -> failwith "Lists have different lengths"
+
+    let unzip pairs =
+        let rec loop xs ys pairs =
+            match pairs with
+            | [] -> rev xs, rev ys
+            | (x, y) :: rest -> loop (x :: xs) (y :: ys) rest
+        loop [] [] pairs
+
+    let rec map2 f xs ys =
+        match xs, ys with
+        | [], [] -> []
+        | x :: xr, y :: yr -> f x y :: map2 f xr yr
+        | _ -> failwith "Lists have different lengths"
+
+    let iter2 f xs ys =
+        let rec loop xs ys =
+            match xs, ys with
+            | [], [] -> ()
+            | x :: xr, y :: yr ->
+                f x y
+                loop xr yr
+            | _ -> failwith "Lists have different lengths"
+        loop xs ys
+
+    let fold2 f state xs ys =
+        let rec loop acc xs ys =
+            match xs, ys with
+            | [], [] -> acc
+            | x :: xr, y :: yr -> loop (f acc x y) xr yr
+            | _ -> failwith "Lists have different lengths"
+        loop state xs ys
+
+    let rec exists2 predicate xs ys =
+        match xs, ys with
+        | [], [] -> false
+        | x :: xr, y :: yr -> predicate x y || exists2 predicate xr yr
+        | _ -> failwith "Lists have different lengths"
+
+    let rec forall2 predicate xs ys =
+        match xs, ys with
+        | [], [] -> true
+        | x :: xr, y :: yr -> predicate x y && forall2 predicate xr yr
+        | _ -> failwith "Lists have different lengths"
+
+    let init count initializer =
+        if count < 0 then invalidArg "count" "Count cannot be negative"
+        let rec loop i acc =
+            if i < 0 then acc
+            else loop (i - 1) (initializer i :: acc)
+        loop (count - 1) []
+
+    let replicate count value =
+        init count (fun _ -> value)
+
+    let rec take count xs =
+        if count < 0 then invalidArg "count" "Count cannot be negative"
+        elif count = 0 then []
+        else
+            match xs with
+            | [] -> failwith "Not enough elements"
+            | x :: rest -> x :: take (count - 1) rest
+
+    let rec skip count xs =
+        if count < 0 then invalidArg "count" "Count cannot be negative"
+        elif count = 0 then xs
+        else
+            match xs with
+            | [] -> failwith "Not enough elements"
+            | _ :: rest -> skip (count - 1) rest
+
+    let truncate count xs =
+        if count < 0 then invalidArg "count" "Count cannot be negative"
+        let rec loop n acc xs =
+            if n = 0 then rev acc
+            else
+                match xs with
+                | [] -> rev acc
+                | x :: rest -> loop (n - 1) (x :: acc) rest
+        loop count [] xs
+
+    let takeWhile predicate xs =
+        let rec loop acc xs =
+            match xs with
+            | x :: rest when predicate x -> loop (x :: acc) rest
+            | _ -> rev acc
+        loop [] xs
+
+    let rec skipWhile predicate xs =
+        match xs with
+        | x :: rest when predicate x -> skipWhile predicate rest
+        | _ -> xs
+
+    let contains value xs = exists ((=) value) xs
+
+    let distinct xs =
+        let rec loop seen acc xs =
+            match xs with
+            | [] -> rev acc
+            | x :: rest when contains x seen -> loop seen acc rest
+            | x :: rest -> loop (x :: seen) (x :: acc) rest
+        loop [] [] xs
+
+    let sort xs =
+        let rec insert x sorted =
+            match sorted with
+            | [] -> [x]
+            | y :: rest when x <= y -> x :: y :: rest
+            | y :: rest -> y :: insert x rest
+        fold (fun acc x -> insert x acc) [] xs
+
+    let sortBy projection xs =
+        let rec insert x sorted =
+            match sorted with
+            | [] -> [x]
+            | y :: rest when projection x <= projection y -> x :: y :: rest
+            | y :: rest -> y :: insert x rest
+        fold (fun acc x -> insert x acc) [] xs
+
+    let sortWith comparer xs =
+        let rec insert x sorted =
+            match sorted with
+            | [] -> [x]
+            | y :: rest when comparer x y <= 0 -> x :: y :: rest
+            | y :: rest -> y :: insert x rest
+        fold (fun acc x -> insert x acc) [] xs
+
+    let sum xs = fold (+) LanguagePrimitives.GenericZero xs
+
+    let average xs =
+        let total, count = 	 (fun (s, c) x -> s + float x, c + 1.0) (0.0, 0.0) xs
+        if count = 0.0 then failwith "Empty list"
+        total / count
+
+    let min xs = reduce (fun a b -> if a < b then a else b) xs
+
+    let max xs = reduce (fun a b -> if a > b then a else b) xs
+
+    let minBy projection xs = reduce (fun a b -> if projection a < projection b then a else b) xs
+
+    let maxBy projection xs = reduce (fun a b -> if projection a > projection b then a else b) xs
+
+    let countBy projection xs =
+        let add key counts =
+            let rec loop acc counts =
+                match counts with
+                | [] -> rev ((key, 1) :: acc)
+                | (k, n) :: rest when k = key -> append (rev acc) ((k, n + 1) :: rest)
+                | pair :: rest -> loop (pair :: acc) rest
+            loop [] counts
+        fold (fun counts x -> add (projection x) counts) [] xs
+
+    let groupBy projection xs =
+        let add key value groups =
+            let rec loop acc groups =
+                match groups with
+                | [] -> rev ((key, [value]) :: acc)
+                | (k, values) :: rest when k = key -> append (rev acc) ((k, append values [value]) :: rest)
+                | pair :: rest -> loop (pair :: acc) rest
+            loop [] groups
+        fold (fun groups x -> add (projection x) x groups) [] xs
+
+
+// ============================================================
+// Simple Set implementations
+// ============================================================
+
+module MySet =
+
+    let empty<'T when 'T : comparison> : Set<'T> = Set.empty
+
+    let singleton x = Set.add x Set.empty
+
+    let isEmpty set = Set.isEmpty set
+
+    let add x set = Set.add x set
+
+    let remove x set = Set.remove x set
+
+    let contains x set = Set.contains x set
+
+    let toList set =
+        let mutable result = []
+        for x in set do
+            result <- x :: result
+        Helpers.rev result
+
+    let ofList xs =
+        let rec loop acc xs =
+            match xs with
+            | [] -> acc
+            | x :: rest -> loop (Set.add x acc) rest
+        loop Set.empty xs
+
+    let iter f set =
+        for x in set do
+            f x
+
+    let fold f state set =
+        let mutable acc = state
+        for x in set do
+            acc <- f acc x
+        acc
+
+    let map f set =
+        let mutable result = Set.empty
+        for x in set do
+            result <- Set.add (f x) result
+        result
+
+    let filter predicate set =
+        let mutable result = Set.empty
+        for x in set do
+            if predicate x then
+                result <- Set.add x result
+        result
+
+    let exists predicate set =
+        let mutable found = false
+        let e = set.GetEnumerator()
+        while not found && e.MoveNext() do
+            if predicate e.Current then found <- true
+        found
+
+    let forall predicate set =
+        let mutable ok = true
+        let e = set.GetEnumerator()
+        while ok && e.MoveNext() do
+            if not (predicate e.Current) then ok <- false
+        ok
+
+    let partition predicate set =
+        let mutable yes = Set.empty
+        let mutable no = Set.empty
+        for x in set do
+            if predicate x then yes <- Set.add x yes
+            else no <- Set.add x no
+        yes, no
+
+    let union a b =
+        let mutable result = a
+        for x in b do
+            result <- Set.add x result
+        result
+
+    let intersect a b =
+        let mutable result = Set.empty
+        for x in a do
+            if Set.contains x b then
+                result <- Set.add x result
+        result
+
+    let difference a b =
+        let mutable result = Set.empty
+        for x in a do
+            if not (Set.contains x b) then
+                result <- Set.add x result
+        result
+
+    let isSubset a b = forall (fun x -> Set.contains x b) a
+
+    let isSuperset a b = isSubset b a
+
+    let count set = fold (fun n _ -> n + 1) 0 set
+
+    let minElement set =
+        if Set.isEmpty set then failwith "Empty set"
+        let e = set.GetEnumerator()
+        e.MoveNext() |> ignore
+        e.Current
+
+    let maxElement set =
+        if Set.isEmpty set then failwith "Empty set"
+        let mutable last = minElement set
+        for x in set do
+            last <- x
+        last
+
+
+// ============================================================
+// Simple Map implementations
+// ============================================================
+
+module MyMap =
+
+    let empty<'K, 'V when 'K : comparison> : Map<'K, 'V> = Map.empty
+
+    let isEmpty map = Map.isEmpty map
+
+    let add key value map = Map.add key value map
+
+    let remove key map = Map.remove key map
+
+    let containsKey key map = Map.containsKey key map
+
+    let find key map = Map.find key map
+
+    let tryFind key map = Map.tryFind key map
+
+    let toList map =
+        let mutable result = []
+        for KeyValue(k, v) in map do
+            result <- (k, v) :: result
+        Helpers.rev result
+
+    let ofList pairs =
+        let rec loop acc pairs =
+            match pairs with
+            | [] -> acc
+            | (k, v) :: rest -> loop (Map.add k v acc) rest
+        loop Map.empty pairs
+
+    let iter f map =
+        for KeyValue(k, v) in map do
+            f k v
+
+    let fold f state map =
+        let mutable acc = state
+        for KeyValue(k, v) in map do
+            acc <- f acc k v
+        acc
+
+    let map f input =
+        let mutable result = Map.empty
+        for KeyValue(k, v) in input do
+            result <- Map.add k (f k v) result
+        result
+
+    let filter predicate input =
+        let mutable result = Map.empty
+        for KeyValue(k, v) in input do
+            if predicate k v then
+                result <- Map.add k v result
+        result
+
+    let exists predicate input =
+        let mutable found = false
+        let e = input.GetEnumerator()
+        while not found && e.MoveNext() do
+            let pair = e.Current
+            if predicate pair.Key pair.Value then found <- true
+        found
+
+    let forall predicate input =
+        let mutable ok = true
+        let e = input.GetEnumerator()
+        while ok && e.MoveNext() do
+            let pair = e.Current
+            if not (predicate pair.Key pair.Value) then ok <- false
+        ok
+
+    let partition predicate input =
+        let mutable yes = Map.empty
+        let mutable no = Map.empty
+        for KeyValue(k, v) in input do
+            if predicate k v then yes <- Map.add k v yes
+            else no <- Map.add k v no
+        yes, no
+
+    let count input = fold (fun n _ _ -> n + 1) 0 input
+
+    let keys input =
+        let mutable result = []
+        for KeyValue(k, _) in input do
+            result <- k :: result
+        Helpers.rev result
+
+    let values input =
+        let mutable result = []
+        for KeyValue(_, v) in input do
+            result <- v :: result
+        Helpers.rev result
+
+    let pick chooser input =
+        let mutable result = None
+        let e = input.GetEnumerator()
+        while result.IsNone && e.MoveNext() do
+            let pair = e.Current
+            match chooser pair.Key pair.Value with
+            | Some x -> result <- Some x
+            | None -> ()
+        match result with
+        | Some x -> x
+        | None -> failwith "No matching element"
+
+    let tryPick chooser input =
+        let mutable result = None
+        let e = input.GetEnumerator()
+        while result.IsNone && e.MoveNext() do
+            let pair = e.Current
+            match chooser pair.Key pair.Value with
+            | Some x -> result <- Some x
+            | None -> ()
+        result
+
+
+// ============================================================
+// Simple Seq implementations
+// ============================================================
+
+module MySeq =
+
+    let empty<'T> : seq<'T> = seq { }
+
+    let singleton x = seq { yield x }
+
+    let ofList xs =
+        seq {
+            let rec loop xs =
+                seq {
+                    match xs with
+                    | [] -> ()
+                    | x :: rest ->
+                        yield x
+                        yield! loop rest
+                }
+            yield! loop xs
+        }
+
+    let toList source =
+        let mutable result = []
+        for x in source do
+            result <- x :: result
+        Helpers.rev result
+
+    let isEmpty source =
+        let e = source.GetEnumerator()
+        not (e.MoveNext())
+
+    let head source =
+        let e = source.GetEnumerator()
+        if e.MoveNext() then e.Current
+        else failwith "Empty sequence"
+
+    let tryHead source =
+        let e = source.GetEnumerator()
+        if e.MoveNext() then Some e.Current
+        else None
+
+    let tail source =
+        seq {
+            let mutable first = true
+            for x in source do
+                if first then first <- false
+                else yield x
+        }
+
+    let length source =
+        let mutable count = 0
+        for _ in source do
+            count <- count + 1
+        count
+
+    let iter f source =
+        for x in source do
+            f x
+
+    let iteri f source =
+        let mutable i = 0
+        for x in source do
+            f i x
+            i <- i + 1
+
+    let map f source =
+        seq {
+            for x in source do
+                yield f x
+        }
+
+    let mapi f source =
+        seq {
+            let mutable i = 0
+            for x in source do
+                yield f i x
+                i <- i + 1
+        }
+
+    let filter predicate source =
+        seq {
+            for x in source do
+                if predicate x then yield x
+        }
+
+    let choose chooser source =
+        seq {
+            for x in source do
+                match chooser x with
+                | Some y -> yield y
+                | None -> ()
+        }
+
+    let collect f source =
+        seq {
+            for x in source do
+                for y in f x do
+                    yield y
+        }
+
+    let append a b =
+        seq {
+            for x in a do yield x
+            for y in b do yield y
+        }
+
+    let concat sources =
+        seq {
+            for source in sources do
+                for x in source do
+                    yield x
+        }
+
+    let fold f state source =
+        let mutable acc = state
+        for x in source do
+            acc <- f acc x
+        acc
+
+    let reduce f source =
+        let e = source.GetEnumerator()
+        if not (e.MoveNext()) then failwith "Empty sequence"
+        let mutable acc = e.Current
+        while e.MoveNext() do
+            acc <- f acc e.Current
+        acc
+
+    let exists predicate source =
+        let mutable found = false
+        let e = source.GetEnumerator()
+        while not found && e.MoveNext() do
+            if predicate e.Current then found <- true
+        found
+
+    let forall predicate source =
+        let mutable ok = true
+        let e = source.GetEnumerator()
+        while ok && e.MoveNext() do
+            if not (predicate e.Current) then ok <- false
+        ok
+
+    let find predicate source =
+        let e = source.GetEnumerator()
+        let mutable result = None
+        while result.IsNone && e.MoveNext() do
+            if predicate e.Current then result <- Some e.Current
+        match result with
+        | Some x -> x
+        | None -> failwith "No matching element"
+
+    let tryFind predicate source =
+        let e = source.GetEnumerator()
+        let mutable result = None
+        while result.IsNone && e.MoveNext() do
+            if predicate e.Current then result <- Some e.Current
+        result
+
+    let findIndex predicate source =
+        let e = source.GetEnumerator()
+        let mutable i = 0
+        let mutable result = None
+        while result.IsNone && e.MoveNext() do
+            if predicate e.Current then result <- Some i
+            i <- i + 1
+        match result with
+        | Some n -> n
+        | None -> failwith "No matching element"
+
+    let tryFindIndex predicate source =
+        let e = source.GetEnumerator()
+        let mutable i = 0
+        let mutable result = None
+        while result.IsNone && e.MoveNext() do
+            if predicate e.Current then result <- Some i
+            i <- i + 1
+        result
+
+    let pick chooser source =
+        let e = source.GetEnumerator()
+        let mutable result = None
+        while result.IsNone && e.MoveNext() do
+            match chooser e.Current with
+            | Some x -> result <- Some x
+            | None -> ()
+        match result with
+        | Some x -> x
+        | None -> failwith "No matching element"
+
+    let tryPick chooser source =
+        let e = source.GetEnumerator()
+        let mutable result = None
+        while result.IsNone && e.MoveNext() do
+            match chooser e.Current with
+            | Some x -> result <- Some x
+            | None -> ()
+        result
+
+    let take count source =
+        if count < 0 then invalidArg "count" "Count cannot be negative"
+        seq {
+            let mutable remaining = count
+            let e = source.GetEnumerator()
+            while remaining > 0 && e.MoveNext() do
+                yield e.Current
+                remaining <- remaining - 1
+            if remaining > 0 then failwith "Not enough elements"
+        }
+
+    let skip count source =
+        if count < 0 then invalidArg "count" "Count cannot be negative"
+        seq {
+            let mutable skipped = 0
+            let e = source.GetEnumerator()
+            while skipped < count && e.MoveNext() do
+                skipped <- skipped + 1
+            if skipped < count then failwith "Not enough elements"
+            while e.MoveNext() do
+                yield e.Current
+        }
+
+    let truncate count source =
+        if count < 0 then invalidArg "count" "Count cannot be negative"
+        seq {
+            let mutable remaining = count
+            let e = source.GetEnumerator()
+            while remaining > 0 && e.MoveNext() do
+                yield e.Current
+                remaining <- remaining - 1
+        }
+
+    let takeWhile predicate source =
+        seq {
+            let e = source.GetEnumerator()
+            let mutable keepGoing = true
+            while keepGoing && e.MoveNext() do
+                if predicate e.Current then yield e.Current
+                else keepGoing <- false
+        }
+
+    let skipWhile predicate source =
+        seq {
+            let e = source.GetEnumerator()
+            let mutable skipping = true
+            let mutable startedYielding = false
+            while e.MoveNext() do
+                if skipping && predicate e.Current then
+                    ()
+                else
+                    skipping <- false
+                    startedYielding <- true
+                    yield e.Current
+        }
+
+    let zip xs ys =
+        seq {
+            let ex = xs.GetEnumerator()
+            let ey = ys.GetEnumerator()
+            let mutable mx = ex.MoveNext()
+            let mutable my = ey.MoveNext()
+            while mx && my do
+                yield (ex.Current, ey.Current)
+                mx <- ex.MoveNext()
+                my <- ey.MoveNext()
+            if mx <> my then failwith "Sequences have different lengths"
+        }
+
+    let map2 f xs ys =
+        seq {
+            let ex = xs.GetEnumerator()
+            let ey = ys.GetEnumerator()
+            let mutable mx = ex.MoveNext()
+            let mutable my = ey.MoveNext()
+            while mx && my do
+                yield f ex.Current ey.Current
+                mx <- ex.MoveNext()
+                my <- ey.MoveNext()
+            if mx <> my then failwith "Sequences have different lengths"
+        }
+
+    let contains value source = exists ((=) value) source
+
+    let distinct source =
+        seq {
+            let mutable seen = []
+            for x in source do
+                if not (MyList.contains x seen) then
+                    seen <- x :: seen
+                    yield x
+        }
+
+    let sort source =
+        source |> toList |> MyList.sort |> ofList
+
+    let sortBy projection source =
+        source |> toList |> MyList.sortBy projection |> ofList
+
+    let sortWith comparer source =
+        source |> toList |> MyList.sortWith comparer |> ofList
+
+    let sum source = fold (+) LanguagePrimitives.GenericZero source
+
+    let average source =
+        let total, count = fold (fun (s, c) x -> s + float x, c + 1.0) (0.0, 0.0) source
+        if count = 0.0 then failwith "Empty sequence"
+        total / count
+
+    let min source = reduce (fun a b -> if a < b then a else b) source
+
+    let max source = reduce (fun a b -> if a > b then a else b) source
+
+    let minBy projection source = reduce (fun a b -> if projection a < projection b then a else b) source
+
+    let maxBy projection source = reduce (fun a b -> if projection a > projection b then a else b) source
+
+    let countBy projection source =
+        source |> toList |> MyList.countBy projection |> ofList
+
+    let groupBy projection source =
+        source |> toList |> MyList.groupBy projection |> ofList
