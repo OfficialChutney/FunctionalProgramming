@@ -1,0 +1,663 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Functional Programming Repo Index</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f2ea;
+      --panel: #ffffff;
+      --text: #202124;
+      --muted: #64666a;
+      --line: #d9d3c6;
+      --accent: #16615a;
+      --accent-2: #8c3d28;
+      --code: #f0ece4;
+      --hit: #fff1a8;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.45;
+    }
+
+    header {
+      padding: 28px 24px 18px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfaf6;
+    }
+
+    main {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 22px 0 40px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.8rem, 3vw, 3rem);
+      letter-spacing: 0;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: 1.2rem;
+    }
+
+    h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+    }
+
+    p { margin: 0; }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      overflow-wrap: anywhere;
+    }
+
+    a:hover { text-decoration: underline; }
+
+    .topline {
+      max-width: 900px;
+      color: var(--muted);
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    input[type="search"] {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--text);
+      font-size: 1rem;
+    }
+
+    button, .chip {
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--text);
+      cursor: pointer;
+      font: inherit;
+    }
+
+    button {
+      padding: 0 14px;
+      white-space: nowrap;
+    }
+
+    button:hover, .chip:hover {
+      border-color: var(--accent);
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 0 11px;
+      font-size: .92rem;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(330px, .85fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    section {
+      margin-bottom: 18px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .stat {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.4rem;
+      color: var(--accent-2);
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 10px;
+    }
+
+    .card {
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .card-title {
+      display: flex;
+      gap: 8px;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .kind {
+      flex: 0 0 auto;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: var(--code);
+      color: var(--muted);
+      font-size: .75rem;
+      text-transform: uppercase;
+    }
+
+    .summary {
+      color: var(--muted);
+      font-size: .92rem;
+      margin-bottom: 8px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 8px;
+    }
+
+    .tag {
+      padding: 2px 6px;
+      border-radius: 5px;
+      background: var(--code);
+      color: #444;
+      font-size: .78rem;
+    }
+
+    .path {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted);
+      font-family: Consolas, "Courier New", monospace;
+      font-size: .8rem;
+    }
+
+    .exam-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    details {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    summary {
+      padding: 12px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .detail-body {
+      padding: 0 12px 12px;
+    }
+
+    .impl {
+      display: grid;
+      grid-template-columns: 96px 1fr;
+      gap: 10px;
+      padding: 9px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .impl code {
+      display: inline-block;
+      padding: 1px 5px;
+      border-radius: 5px;
+      background: var(--code);
+      font-family: Consolas, "Courier New", monospace;
+      font-size: .86rem;
+    }
+
+    mark {
+      background: var(--hit);
+      padding: 0 2px;
+    }
+
+    .empty {
+      padding: 20px;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      color: var(--muted);
+      background: #fff;
+    }
+
+    @media (max-width: 860px) {
+      .layout, .toolbar, .stats {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Functional Programming Repo Index</h1>
+    <p class="topline">Offline navigation for assignments, notes, slides, Kattis exercises, exam papers, and scanned F# exam solutions. Links are relative to this repository root, so the page works from any clone of the folder.</p>
+    <div class="toolbar">
+      <input id="search" type="search" placeholder="Search keywords: fold, monad, parser, collatz, tail recursion, mailbox, state, hanoi..." autofocus>
+      <button id="clear" type="button">Clear</button>
+    </div>
+    <div id="quickChips" class="chips"></div>
+  </header>
+
+  <main>
+    <div class="stats">
+      <div class="stat"><strong id="statEntries">0</strong><span>indexed resources</span></div>
+      <div class="stat"><strong id="statExams">0</strong><span>Exam.fs solutions</span></div>
+      <div class="stat"><strong id="statImpls">0</strong><span>exam implementation notes</span></div>
+      <div class="stat"><strong>0</strong><span>online dependencies</span></div>
+    </div>
+
+    <div class="layout">
+      <div>
+        <section>
+          <h2>Search Results</h2>
+          <div id="results" class="grid"></div>
+        </section>
+
+        <section>
+          <h2>Exam Solution Implementation Overview</h2>
+          <p class="summary">This section is focused on recurring exam implementation patterns, especially custom folds over domain-specific data, tail-recursive rewrites, state monads, parsers, async/mailbox processors, and datatype evaluators.</p>
+          <div id="examOverview" class="exam-list"></div>
+        </section>
+      </div>
+
+      <aside>
+        <section>
+          <h2>Quick Folders</h2>
+          <div class="grid" id="folderLinks"></div>
+        </section>
+
+        <section>
+          <h2>High-Value Searches</h2>
+          <div class="chips" id="topicChips"></div>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <script>
+    "use strict";
+
+    const resources = [
+      {title:"README", kind:"overview", path:"README.md", tags:["repo","overview","assignments"], summary:"Repository overview and general starting point."},
+      {title:"Functional Programming using F#", kind:"book", path:"Functional Programming using F# by Michael R. Hansen and Hans Rischel.pdf", tags:["book","reference","hansen","rischel"], summary:"Course book PDF in the repo root."},
+
+      {title:"General notes", kind:"notes", path:"Notes/General_notes_claude.txt", tags:["exam","general","recursion","types","functions"], summary:"Broad exam notes and functional programming reminders."},
+      {title:"Library implementations", kind:"notes", path:"Notes/Library implementations.txt", tags:["list","map","set","seq","array","option","library","fold"], summary:"Local notes on F# collection/library functions and implementations."},
+      {title:"Parser notes", kind:"notes", path:"Notes/Parser_notes.txt", tags:["parser","parsing","jparsec","combinators"], summary:"Parser combinator notes."},
+      {title:"Parser code", kind:"notes", path:"Notes/Parsing/parserCode.fs", tags:["parser","parsing","jparsec","code"], summary:"F# parser code examples."},
+      {title:"Parser notes source", kind:"notes", path:"Notes/Parsing/parserNotes.fs", tags:["parser","parsing","examples"], summary:"Parser examples in F# source form."},
+      {title:"State monad notes", kind:"notes", path:"Notes/StateMonad_notes.txt", tags:["state","monad","builder","bind","return"], summary:"State monad notes."},
+      {title:"Monad notes", kind:"notes", path:"Notes/Monads/monadnotes.fs", tags:["monad","option","safe","bind"], summary:"F# monad examples and safe-list lookup examples."},
+      {title:"Monads tips", kind:"notes", path:"Notes/Monads/Tips and tricks Monads.txt", tags:["monad","tips","state","option"], summary:"Short practical monad tips."},
+      {title:"Parallel notes", kind:"notes", path:"Notes/Parallel_notes.txt", tags:["parallel","async","thread","mailbox"], summary:"Parallelism and async notes."},
+      {title:"Thread notes", kind:"notes", path:"Notes/Threads/threadnotes.fs", tags:["thread","parallel","async"], summary:"Threading examples in F#."},
+      {title:"IO read print notes", kind:"notes", path:"Notes/IO+print/IO-Read-Print_notes.txt", tags:["io","print","read","console"], summary:"Input/output and printing notes."},
+      {title:"Recursion notes", kind:"notes", path:"Notes/Recursion/notes.fs", tags:["recursion","tail","tree","list"], summary:"Recursion examples and exercises."},
+      {title:"Tree example", kind:"notes", path:"Notes/Recursion/treeExample.fs", tags:["tree","recursion","datatype"], summary:"Tree recursion example."},
+      {title:"Rose tree example", kind:"notes", path:"Notes/Recursion/roseTreeExample.fs", tags:["rose tree","tree","recursion","fold"], summary:"Rose tree recursion example."},
+      {title:"List Map Set Seq explanations", kind:"notes", path:"Notes/List_Map_Set_Seq explanations.pdf", tags:["list","map","set","seq","collections"], summary:"Collection explanation PDF."},
+
+      {title:"Exam 2022 paper", kind:"exam paper", path:"Exams/Exam 2022/Exam.pdf", tags:["exam 2022","paper","grayscale","matrix","stack"], summary:"Original 2022 exam paper."},
+      {title:"Exam 2022 solution", kind:"Exam.fs", path:"Exams/Exam 2022/FPExam2022/FPExam2022/Exam.fs", tags:["exam 2022","grayscale","custom fold","matrix","stack monad","parser"], summary:"Grayscale datatype, image map/fold, matrix operations, stack language, state monad, parser."},
+      {title:"Reexam 2022 paper", kind:"exam paper", path:"Exams/Reexam2022/Exam.pdf", tags:["reexam 2022","paper","grayscale","assembly","state"], summary:"Original 2022 reexam paper."},
+      {title:"Reexam 2022 solution", kind:"Exam.fs", path:"Exams/Reexam2022/FPExam2022_2/FPExam2022_2/Exam.fs", tags:["reexam 2022","grayscale","compress","fold","matrix","assembly","state"], summary:"Grayscale recursion/compression, filters, matrix checks, assembler, state workflow."},
+      {title:"Exam 2023 paper", kind:"exam paper", path:"Exams/Exam 2023/FP2023 Exam.pdf", tags:["exam 2023","paper","prop","collatz","memory","parser"], summary:"Original 2023 exam paper."},
+      {title:"Exam 2023 solution", kind:"Exam.fs", path:"Exams/Exam 2023/FPExam2023/Exam.fs", tags:["exam 2023","proposition","fold","collatz","parallel","state monad","parser"], summary:"Proposition evaluator, list functions, Collatz analysis, memory/state monad, expression parser."},
+      {title:"Reexam 2023 paper", kind:"exam paper", path:"Exams/Reexam2023/Functional Programming Exam 2023-08-17.pdf", tags:["reexam 2023","paper","arith","balanced","basic"], summary:"Original 2023 reexam paper."},
+      {title:"Reexam 2023 solution", kind:"Exam.fs", path:"Exams/Reexam2023/FPReExam2023/Exam.fs", tags:["reexam 2023","arith","mutual recursion","balanced parentheses","fold","parser","basic","state monad"], summary:"Arithmetic expressions, balanced strings, parser, BASIC-like interpreter, state monad."},
+      {title:"Reexam 2023 alternate solution", kind:"Exam.fs", path:"Exams/Reexam2023/Solution/FPReExam2023/Exam.fs", tags:["reexam 2023","alternate","arith","balanced","interpreter"], summary:"Alternate solution copy for the 2023 reexam."},
+      {title:"Exam 2024 paper", kind:"exam paper", path:"Exams/Exam 2024/Exam.pdf", tags:["exam 2024","paper","transactions","router"], summary:"Original 2024 exam paper."},
+      {title:"Exam 2024 solution 1", kind:"Exam.fs", path:"Exams/Exam 2024/FPExam2024_1/Exam.fs", tags:["exam 2024","transactions","balanceFold","foldBack","tail recursion","router"], summary:"Transactions datatype, custom transaction fold, foldBack decimal conversion, router/network logic."},
+      {title:"Exam 2024 solution 2", kind:"Exam.fs", path:"Exams/Exam 2024/FPExam2024_2/Exam.fs", tags:["exam 2024","transactions","balanceFold","foldBack","parser","tail recursion"], summary:"Second 2024 solution with similar transaction fold and additional implementation variants."},
+      {title:"Reexam 2024 paper", kind:"exam paper", path:"Exams/Reaxam2024/ReExam.pdf", tags:["reexam 2024","paper","shape","cipher","clicker"], summary:"Original 2024 reexam paper. Folder name is spelled Reaxam2024 in the repo."},
+      {title:"Reexam 2024 solution", kind:"Exam.fs", path:"Exams/Reaxam2024/FPReExam2024/Exam.fs", tags:["reexam 2024","shapeListFold","shape","cipher","parser","clicker","state monad"], summary:"Shapes and custom fold, Caesar-style cipher, parsing, clicker state monad."},
+      {title:"Exam 2025 paper", kind:"exam paper", path:"Exams/Exam 2025/FPExam2025.pdf", tags:["exam 2025","paper","rectangle","philosophers","hanoi"], summary:"Original 2025 exam paper."},
+      {title:"Exam 2025 solution", kind:"Exam.fs", path:"Exams/Exam 2025/Exam2025_Template/Exam.fs", tags:["exam 2025","rectFold","rectangle","dining philosophers","mailbox","hanoi","monad","parser"], summary:"Rectangle coordinate fold, dining philosophers, mailbox processor, Hanoi monad and parser."},
+      {title:"Reexam 2025 paper", kind:"exam paper", path:"Exams/Reexam2025/FPReExam2025.pdf", tags:["reexam 2025","paper","triangle","store","tic tac toe"], summary:"Original 2025 reexam paper."},
+      {title:"Reexam 2025 solution", kind:"Exam.fs", path:"Exams/Reexam2025/Exam2025-2/Exam.fs", tags:["reexam 2025","triangle","sequence","fold","mailbox","store","tic tac toe","monad"], summary:"Triangle numbers, sequence/fold style, locked store server, tic-tac-toe state/monad."},
+
+      {title:"Assignment 1", kind:"assignment", path:"Assignments/Assignment1/Assignment1.fs", tags:["assignment","basics","functions"], summary:"Early F# assignment source."},
+      {title:"Assignment 2", kind:"assignment", path:"Assignments/Assignment2/Assignment2.fs", tags:["assignment","recursion","lists"], summary:"Assignment 2 source."},
+      {title:"Assignment 3", kind:"assignment", path:"Assignments/Assignment3/Assignment3.fs", tags:["assignment","map","filter","fold","composition","permutations"], summary:"Map/filter/fold and higher-order function practice."},
+      {title:"Assignment 4", kind:"assignment", path:"Assignments/Assignment4/Eval.fs", tags:["assignment","interpreter","eval","language"], summary:"Interpreter evaluation assignment."},
+      {title:"Assignment 5", kind:"assignment", path:"Assignments/Assignment5/Assignment5/Eval.fs", tags:["assignment","state","memory","eval"], summary:"Language evaluator with state/memory."},
+      {title:"Assignment 6", kind:"assignment", path:"Assignments/Assignment6/Assignment6/Eval.fs", tags:["assignment","state","memory","eval"], summary:"Interpreter assignment with memory/state modules."},
+      {title:"Assignment 7", kind:"assignment", path:"Assignments/Assignment7/Assignment7/Eval.fs", tags:["assignment","arrays","fork","eval","state"], summary:"Interpreter extension assignment."},
+      {title:"Assignment 8", kind:"assignment", path:"Assignments/Assignment8/Eval.fs", tags:["assignment","state monad","eval","memory"], summary:"State monad/interpreter work."},
+      {title:"Assignment 9", kind:"assignment", path:"Assignments/Assignment9/StateMonad.fs", tags:["assignment","state monad","parser","continuation","programs"], summary:"State monad and language implementation."},
+      {title:"Assignment 10", kind:"assignment", path:"Assignments/Assignment10/StateMonad.fs", tags:["assignment","state monad","continuation","functions","callCC"], summary:"Later interpreter/state-continuation monad work."},
+      {title:"Kattis README", kind:"kattis", path:"Kattis/README.md", tags:["kattis","exercises","practice"], summary:"Kattis folder overview."},
+      {title:"Kattis TimeLoop", kind:"kattis", path:"Kattis/TimeLoop/Program.fs", tags:["kattis","loop","recursion"], summary:"Simple Kattis exercise."},
+      {title:"Kattis IntervalScheduling", kind:"kattis", path:"Kattis/IntervalScheduling/Program.fs", tags:["kattis","interval","scheduling","greedy"], summary:"Interval scheduling exercise."}
+    ];
+
+    const exams = [
+      {
+        title:"Exam 2022",
+        path:"Exams/Exam 2022/FPExam2022/FPExam2022/Exam.fs",
+        focus:"Grayscale quad-tree image datatype, stack programs, matrices, parser combinators.",
+        items:[
+          ["fold", "Custom fold over grayscale: `fold folder acc img` visits every `Square` in a `Quad` tree."],
+          ["map", "Custom image map: `map : (uint8 -> grayscale) -> grayscale -> grayscale` rebuilds the grayscale tree."],
+          ["state monad", "`StateMonad<'a>` over stack with `push`, `pop`, `evalSM`, and computation expression builder."],
+          ["parser", "Parsers for `PUSH`, `ADD`, `MULT`, newlines, and full stack programs."],
+          ["parallel", "`parInit` fills matrix cells using async workflows."]
+        ]
+      },
+      {
+        title:"Reexam 2022",
+        path:"Exams/Reexam2022/FPExam2022_2/FPExam2022_2/Exam.fs",
+        focus:"Grayscale compression, fold-based filtering, matrix validation, assembly/state execution.",
+        items:[
+          ["fold", "Uses `List.fold` to compute image depth, detect equality in quad compression, filter through predicates, and validate matrix rows."],
+          ["tree recursion", "`compress`, `mirror`, and `operate` recurse over the grayscale datatype."],
+          ["tail recursion", "Tail-recursive variants using accumulator functions for predicate/filter examples."],
+          ["state", "Assembler/program runner and state computation expression in later questions."]
+        ]
+      },
+      {
+        title:"Exam 2023",
+        path:"Exams/Exam 2023/FPExam2023/Exam.fs",
+        focus:"Proposition AST, list operations, Collatz, memory interpreter, state monad, parser.",
+        items:[
+          ["fold", "`exists` uses `List.fold`; Collatz helpers use `List.fold`/`Array.fold`; parser/state examples use folded collections."],
+          ["datatype eval", "`eval` and `negate` recurse over `prop` values such as `TT`, `FF`, `And`, `Or`."],
+          ["parallel", "`parallelMaxCollatz` chunks ranges and uses parallel/array folding."],
+          ["state monad", "`StateMonad<'a>` wraps memory transitions with `lookup2`, `assign2`, and `StateBuilder`."],
+          ["parser", "Expression parsers for numbers, lookup, plus, and minus with forwarded parser refs."]
+        ]
+      },
+      {
+        title:"Reexam 2023",
+        path:"Exams/Reexam2023/FPReExam2023/Exam.fs",
+        focus:"Arithmetic expressions, balanced delimiters, parser, BASIC-like interpreter, state monad.",
+        items:[
+          ["fold", "`balanced3` folds characters into an optional stack; `mkBasicProgram` folds program lines into a map; array/list folds count balanced strings."],
+          ["mutual recursion", "`foo`/`bar` examples use `and` for mutually recursive functions."],
+          ["parser", "Parser for balanced delimiters with forwarded references."],
+          ["state monad", "State monad carries BASIC program and current line/environment."],
+          ["interpreter", "`evalExpr`, `step`, and `evalProg` evaluate a BASIC-like language."]
+        ]
+      },
+      {
+        title:"Reexam 2023 alternate solution",
+        path:"Exams/Reexam2023/Solution/FPReExam2023/Exam.fs",
+        focus:"Alternate solution set for the 2023 reexam with the same broad arithmetic, balanced-string, parser, and interpreter topics.",
+        items:[
+          ["fold", "Uses folded collection transformations in balanced-string and interpreter support code."],
+          ["arith", "Arithmetic expression datatype with recursive evaluators and helpers."],
+          ["parser", "Balanced delimiter parsing and parser-combinator examples."],
+          ["state monad", "State monad variants for interpreter evaluation."],
+          ["interpreter", "BASIC-like program representation and evaluation."]
+        ]
+      },
+      {
+        title:"Exam 2024",
+        path:"Exams/Exam 2024/FPExam2024_1/Exam.fs",
+        focus:"Transaction datatype, custom transaction fold, foldBack, router/network logic.",
+        items:[
+          ["balanceFold", "Custom fold over `transactions` with separate pay and receive folders."],
+          ["foldBack", "`baz2` converts digit lists with `List.foldBack`."],
+          ["tail recursion", "Shows non-tail-recursive `baz` and a continuation-style tail-recursive rewrite."],
+          ["network", "Router/network functions use lists, sets, and maps in later questions."]
+        ]
+      },
+      {
+        title:"Exam 2024 solution 2",
+        path:"Exams/Exam 2024/FPExam2024_2/Exam.fs",
+        focus:"Alternative 2024 solution with transaction folds and additional variants.",
+        items:[
+          ["balanceFold", "Same custom transaction fold idea: `payFolder` and `receiveFolder` are injected."],
+          ["foldBack", "Decimal/list reconstruction with `List.foldBack`."],
+          ["tail recursion", "Continuation-passing style for transforming non-tail recursion."],
+          ["collections", "Set-based participant extraction and map/list operations."]
+        ]
+      },
+      {
+        title:"Reexam 2024",
+        path:"Exams/Reaxam2024/FPReExam2024/Exam.fs",
+        focus:"Shapes, shape-list fold, cipher/parser, clicker state monad.",
+        items:[
+          ["shapeListFold", "Custom fold over `shapeList`: applies a folder to every `shape` in `Empty`, `AddShape`, and `AddShapes` cases."],
+          ["fold", "`totalArea2`, `totalCircumference2`, and `containsCircle` are derived from `shapeListFold`; `baz2` folds mapped chars into a string."],
+          ["parser", "Parser for encrypted text and command-like inputs."],
+          ["state monad", "Clicker state monad with `click2`, `read2`, and `multipleClicks2`."],
+          ["parallel", "`parEncrypt` chunks strings and encrypts chunks with `Array.Parallel.map`."]
+        ]
+      },
+      {
+        title:"Exam 2025",
+        path:"Exams/Exam 2025/Exam2025_Template/Exam.fs",
+        focus:"Rectangle coordinates, dining philosophers, mailbox processor, Hanoi monad/parser.",
+        items:[
+          ["rectFold", "Custom fold over every coordinate in a rectangle: `rectFold f acc r` drives `coords2`."],
+          ["fold", "`merge` folds rectangles into a coordinate set."],
+          ["mailbox", "Dining philosophers are coordinated with `MailboxProcessor` and pending reply channels."],
+          ["hanoi monad", "`hanoiMonad<'a>` plus `HanoiBuilder`, `take2`, `place2`, `move`, and `solveHanoi`."],
+          ["parser", "Parsers for `start`, `middle`, `goal`, and move expressions like `start->goal`."]
+        ]
+      },
+      {
+        title:"Reexam 2025",
+        path:"Exams/Reexam2025/Exam2025-2/Exam.fs",
+        focus:"Triangle sequences, fold-style predicates, locked store server, tic-tac-toe state.",
+        items:[
+          ["fold", "`triangleNumberList` folds summed ranges; `baz2` folds pairs into a boolean predicate."],
+          ["sequence", "`sequence` abstracts repeated indexed state updates."],
+          ["mailbox", "Locked store server with `MailboxProcessor`, pending lock requests, and async replies."],
+          ["state", "Tic-tac-toe board state, move validation, win detection, and computation expression."],
+          ["tail recursion", "Continuation-based `fooTail` rewrite."]
+        ]
+      }
+    ];
+
+    const folderLinks = [
+      ["Assignments", "Assignments/", "Current assignment solutions and projects."],
+      ["Assignment1-6_Gr_Ye_Re", "Assignment1-6_Gr_Ye_Re/", "Older grouped assignment set."],
+      ["Exams", "Exams/", "Exam papers, materials, templates, and solutions."],
+      ["Notes", "Notes/", "Exam notes, parser notes, monads, recursion, IO, threads."],
+      ["Slides", "Slides/", "Lecture slide PDFs."],
+      ["Kattis", "Kattis/", "Kattis practice solutions."]
+    ];
+
+    const quickTerms = ["fold", "custom fold", "state monad", "parser", "tail recursion", "mailbox", "async", "collatz", "balanced", "hanoi", "transactions", "grayscale", "rectangle", "shape", "tic tac toe", "kattis"];
+
+    const search = document.getElementById("search");
+    const results = document.getElementById("results");
+    const overview = document.getElementById("examOverview");
+    const clear = document.getElementById("clear");
+
+    function href(path) {
+      return path.split("/").map(encodeURIComponent).join("/");
+    }
+
+    function haystack(entry) {
+      return [entry.title, entry.kind, entry.path, entry.summary, ...(entry.tags || [])].join(" ").toLowerCase();
+    }
+
+    function score(entry, terms) {
+      const h = haystack(entry);
+      let total = 0;
+      for (const term of terms) {
+        if (!term) continue;
+        const exactTitle = entry.title.toLowerCase().includes(term) ? 5 : 0;
+        const exactTag = (entry.tags || []).some(t => t.toLowerCase().includes(term)) ? 4 : 0;
+        const general = h.includes(term) ? 2 : 0;
+        if (!general && !exactTag && !exactTitle) return 0;
+        total += exactTitle + exactTag + general;
+      }
+      return total;
+    }
+
+    function highlight(text, terms) {
+      let out = text;
+      for (const term of terms.filter(Boolean).sort((a, b) => b.length - a.length)) {
+        const safe = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        out = out.replace(new RegExp(`(${safe})`, "ig"), "<mark>$1</mark>");
+      }
+      return out;
+    }
+
+    function renderResults() {
+      const query = search.value.trim().toLowerCase();
+      const terms = query.split(/\s+/).filter(Boolean);
+      const matches = resources
+        .map(entry => ({entry, score: terms.length ? score(entry, terms) : 1}))
+        .filter(x => x.score > 0)
+        .sort((a, b) => b.score - a.score || a.entry.title.localeCompare(b.entry.title));
+
+      results.innerHTML = "";
+      if (!matches.length) {
+        results.innerHTML = `<div class="empty">No local index matches. Try a broader term such as <strong>fold</strong>, <strong>parser</strong>, <strong>state</strong>, or <strong>exam 2024</strong>.</div>`;
+        return;
+      }
+
+      for (const {entry} of matches) {
+        const card = document.createElement("article");
+        card.className = "card";
+        card.innerHTML = `
+          <div class="card-title">
+            <h3><a href="${href(entry.path)}">${highlight(entry.title, terms)}</a></h3>
+            <span class="kind">${entry.kind}</span>
+          </div>
+          <p class="summary">${highlight(entry.summary, terms)}</p>
+          <a class="path" href="${href(entry.path)}">${entry.path}</a>
+          <div class="tags">${entry.tags.map(t => `<span class="tag">${highlight(t, terms)}</span>`).join("")}</div>
+        `;
+        results.appendChild(card);
+      }
+    }
+
+    function renderExamOverview() {
+      const query = search.value.trim().toLowerCase();
+      const terms = query.split(/\s+/).filter(Boolean);
+      overview.innerHTML = "";
+
+      for (const exam of exams) {
+        const examText = [exam.title, exam.path, exam.focus, ...exam.items.flat()].join(" ").toLowerCase();
+        if (terms.length && !terms.every(t => examText.includes(t))) continue;
+
+        const details = document.createElement("details");
+        details.open = terms.length > 0 || /fold|custom fold|state monad|parser/.test(query);
+        details.innerHTML = `
+          <summary>${highlight(exam.title, terms)} <span class="kind">Exam.fs</span></summary>
+          <div class="detail-body">
+            <p class="summary">${highlight(exam.focus, terms)}</p>
+            <a class="path" href="${href(exam.path)}">${exam.path}</a>
+            ${exam.items.map(([topic, text]) => `
+              <div class="impl">
+                <div><code>${highlight(topic, terms)}</code></div>
+                <div>${highlight(text, terms)}</div>
+              </div>
+            `).join("")}
+          </div>
+        `;
+        overview.appendChild(details);
+      }
+
+      if (!overview.children.length) {
+        overview.innerHTML = `<div class="empty">No exam implementation notes matched the current search.</div>`;
+      }
+    }
+
+    function renderFolders() {
+      const root = document.getElementById("folderLinks");
+      root.innerHTML = folderLinks.map(([name, path, text]) => `
+        <article class="card">
+          <h3><a href="${href(path)}">${name}</a></h3>
+          <p class="summary">${text}</p>
+          <a class="path" href="${href(path)}">${path}</a>
+        </article>
+      `).join("");
+    }
+
+    function renderChips() {
+      const quick = document.getElementById("quickChips");
+      const topics = document.getElementById("topicChips");
+      const html = quickTerms.map(term => `<button class="chip" type="button" data-term="${term}">${term}</button>`).join("");
+      quick.innerHTML = html;
+      topics.innerHTML = html;
+
+      document.querySelectorAll("[data-term]").forEach(chip => {
+        chip.addEventListener("click", () => {
+          search.value = chip.dataset.term;
+          update();
+          search.focus();
+        });
+      });
+    }
+
+    function update() {
+      renderResults();
+      renderExamOverview();
+    }
+
+    document.getElementById("statEntries").textContent = resources.length;
+    document.getElementById("statExams").textContent = exams.length;
+    document.getElementById("statImpls").textContent = exams.reduce((sum, exam) => sum + exam.items.length, 0);
+
+    search.addEventListener("input", update);
+    clear.addEventListener("click", () => {
+      search.value = "";
+      update();
+      search.focus();
+    });
+
+    renderFolders();
+    renderChips();
+    update();
+  </script>
+</body>
+</html>
