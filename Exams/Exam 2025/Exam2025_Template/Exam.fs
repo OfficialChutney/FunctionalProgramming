@@ -478,9 +478,9 @@ module Exam2025_Template.Exam
     let place (p : peg) (d : disc) (h : hanoi) : Result<hanoi, error>  = 
         let list = Map.find p h
 
-        match list.IsEmpty || list[list.Length-1] > d with
+        match list.IsEmpty || list[list.Length-1] < d with
         | true -> Ok (Map.add p (d::list) h)
-        | false -> Error(Invalid(p,d,list[list.Length-1]))
+        | false -> Error(Invalid(p,list[list.Length-1],d))
     
     (* Question 4.3 *)
     
@@ -499,19 +499,23 @@ module Exam2025_Template.Exam
     let (>>=) a f = bind f a  
     let (>>>=) a b = a >>= (fun _ -> b)
 
-    let evalHM (HM f) l = f (newGame l)
+    let evalHM l (HM f) = f (newGame l)
     
     let take2 (p : peg) : hanoiMonad<disc> = 
         HM (fun h ->
             match take p h with
             | Ok (d, h') -> Ok (d, h')
-            | Error e -> Error e)
+            | Error e -> 
+                let (HM f) = fail e
+                f h)
     
     let place2 (p : peg) (d : disc)  = 
         HM (fun h ->
             match place p d h with
             | Ok h' -> Ok ((), h')
-            | Error e -> Error e)
+            | Error e -> 
+                let (HM f) = fail e
+                f h)
 
     (* Question 4.4 *)
     
@@ -524,9 +528,20 @@ module Exam2025_Template.Exam
 
     let han = new HanoiBuilder()
     
-    let move _ = failwith "not implemented"
+    let move (fromPeg : peg) (toPeg : peg) = han {
+        let! disc = take2 fromPeg
+        return! place2 toPeg disc
+    }
+
     
-    let doMoves _ = failwith "not implemented"
+    let rec doMoves (list : (peg * peg) list) = han {
+        match list with
+        | [] -> return ()
+        | (fromPeg, toPeg)::xs -> 
+            do! move fromPeg toPeg
+            return! doMoves xs
+    }
+
     
     let rec solveHanoi size from via dest =
         match size with
@@ -537,12 +552,12 @@ module Exam2025_Template.Exam
                
     (* Question 4.5 *)
     
-    let pstart = eof  // your parser goes here
-    let pmiddle = eof // your parser goes here
-    let pgoal = eof  // your parser goes here
+    let pstart = pstring "start" |>> (fun _ -> Start)  // your parser goes here
+    let pmiddle = pstring "middle" |>> (fun _ -> Middle) // your parser goes here
+    let pgoal = pstring "goal" |>> (fun _ -> Goal)  // your parser goes here
     
-    let parsePeg = eof // your parser goes here
-    let parseMove = eof // your parser goes here
-    let parseMoves = eof // your parser goes here
+    let parsePeg = choice [pstart; pmiddle; pgoal] // your parser goes here
+    let parseMove = parsePeg .>> pstring "->" .>>. parsePeg // your parser goes here
+    let parseMoves = many (choice [parseMove .>> pstring ";"])// your parser goes here
 
      
