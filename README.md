@@ -2,7 +2,8 @@
 
 ## What does this contain?
 
-All yellow and Green exercises (and very few red ones).
+All yellow (up to assignment 8) and Green exercises (and very few red ones). Assignment 10 is missing.
+This repo also contains Kattis exercise solutions and solutions for most of the early exams up until 2025.
 
 ## The code looks shit - why?
 
@@ -17,7 +18,6 @@ No one does. To pass this course, you have to be an expert in F# and a professio
 
 
 And yes... it is the same articulation at the exam. Better be good at code games... FML
-
 
 
 ## How long did each assignment take?
